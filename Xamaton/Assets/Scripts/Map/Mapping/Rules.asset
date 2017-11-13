@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd2a2ee578eff7744a54ae3922956f3e, type: 3}
+  m_Name: Rules
+  m_EditorClassIdentifier: 
+  defaultCell: {fileID: 114192827780210896, guid: 065437b97c651284ab666a56ab8ffac9,
+    type: 2}
+  rules: []

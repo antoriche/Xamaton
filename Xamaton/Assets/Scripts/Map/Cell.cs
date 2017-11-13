@@ -11,7 +11,6 @@ public class Cell : MonoBehaviour{
 	private int id_;
 	public int Id{ get{ return id_; } }
 	public MeshMap Matrice { get { return gameObject.GetComponentInParent<MeshMap>(); } }
-	//public int SIZE {get{ return Math.Max(gameObject.transform.localScale.x,gameObject.transform.localScale.y); }}
 
 
 	private Placable content_;
@@ -20,11 +19,12 @@ public class Cell : MonoBehaviour{
 			return content_;
 		}
 		set{
-			if(content_)
-				content_.Cell = null;
+			Placable old = content_;
 			content_ = value;
-			if(content_.Cell != this)
+			if(content_ && content_.Cell != this)
 				content_.Cell = this;
+			if(old && old.Cell != null)
+				old.Cell = null;
 			RefreshRender ();
 		}
 	}
@@ -96,13 +96,13 @@ public class Cell : MonoBehaviour{
 		Renderer renderer = gameObject.GetComponentInChildren<Renderer> ();
 		if (renderer){
 			renderer.material.color = select_ ? Color.blue : mouseOver_ ? Color.green : Color.white;
-			renderer.material.mainTexture = Content.Image;
+			renderer.material.mainTexture = Content ? Content.Image : renderer.material.mainTexture ;
 		}
 	}
 
 }
 
-/*[CustomEditor(typeof(Cell))]
+[CustomEditor(typeof(Cell))]
 [CanEditMultipleObjects]
 class CellEditor : Editor {
 
@@ -115,8 +115,7 @@ class CellEditor : Editor {
 	public override void OnInspectorGUI(){
 		EditorGUILayout.LabelField ("ID : ",cell.Id.ToString());
 		Vector2 position = cell.Matrice.getPositionFromCell (cell).Value;
-		EditorGUILayout.LabelField ("X : "+position.x.ToString());
-		EditorGUILayout.LabelField ("Y : "+position.y.ToString());
+		EditorGUILayout.LabelField ("Position : ","X : "+position.x.ToString()+"  Y : "+position.y.ToString());
 	}
 
-}*/
+}

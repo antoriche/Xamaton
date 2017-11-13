@@ -6,9 +6,7 @@ using System;
 public class MeshMap : Singleton<MeshMap>{
 
 	[SerializeField]
-	int width;
-	[SerializeField]
-	int height;
+	Map Map; // TODO : Width/Height = 0 (File read after Start() )
 
 	[SerializeField]
 	Cell cellPrefab;
@@ -23,8 +21,8 @@ public class MeshMap : Singleton<MeshMap>{
 	void Start () {
 		int i = 0;
 		cells = new Dictionary<Int32,Cell> ();
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
+		for (int x = 0; x < Map.Width; x++) {
+			for (int y = 0; y < Map.Height; y++) {
 				Cell[] neighbors = new Cell[4];
 				neighbors [Cell.LEFT] = (x==0)?null:cells[i-1];
 				neighbors [Cell.TOP] = getCellFromPosition (new Vector2(x,y-1));
@@ -44,7 +42,7 @@ public class MeshMap : Singleton<MeshMap>{
 	 * @return : the cell at the position asked.
 	 */
 	public Cell getCellFromPosition(Vector2 position){
-		Int32 id = (int)(position.y * width + position.x);
+		Int32 id = (int)(position.y * Map.Width + position.x);
 		return getCellFromId (id);
 	}
 	/*
@@ -53,8 +51,8 @@ public class MeshMap : Singleton<MeshMap>{
 	 */
 	private Vector2 getPositionFromCell(int id){
 		Vector2 vector = new Vector2 ();
-		vector.x = id % width;
-		vector.y = (id - vector.x) / width;
+		vector.x = id % Map.Width;
+		vector.y = (id - vector.x) / Map.Width;
 		return vector;
 	}
 	/*
@@ -73,13 +71,13 @@ public class MeshMap : Singleton<MeshMap>{
 	public Cell getCellFromId(int id){
 		try{
 			return cells[id];
-		}catch(KeyNotFoundException){
+		}catch(Exception){ //KeyNotFoundException
 			return null;
 		}
 	}
 
 	public void OnDrawGizmos(){
-		Gizmos.DrawCube (new Vector3 (width/2,height/2,0),new Vector3 (width,height,1));
+		Gizmos.DrawCube (new Vector3 (Map.Width/2,Map.Height/2,0),new Vector3 (Map.Width,Map.Height,1));
 	}
 
 	/*
@@ -87,8 +85,8 @@ public class MeshMap : Singleton<MeshMap>{
 	 * Warning : the size view is based on height.
 	 */
 	private void PutCameraOverMap(){
-		Camera.main.transform.position = new Vector3 (width / 2, height / 2, -10);
-		Camera.main.orthographicSize = height*5/10;
+		Camera.main.transform.position = new Vector3 (Map.Width / 2, Map.Height / 2, -10);
+		Camera.main.orthographicSize = Map.Height*5/10;
 	}
 
 	/*

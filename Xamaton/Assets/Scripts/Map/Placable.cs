@@ -7,26 +7,23 @@ public class Placable : MonoBehaviour {
 	[SerializeField]
 	Texture2D image;
 
-	[SerializeField]
-	MeshMap map;
-
 	//[SerializeField]
 	//Vector2 cellPosition; //used for initialisation
 
-	[SerializeField]
+	//[SerializeField]
 	private Cell cell_;
 	public Cell Cell{
 		get{
 			return cell_;
 		}
 		set{
-			if(cell_)
-				cell_.Content = null;
+			Cell old = cell_;
 			cell_ = value;
 			if (cell_ && cell_.Content != this) {
 				cell_.Content = this;
-				map = cell_.Matrice;
 			}
+			if(old && old.Content != null)
+				old.Content = null;
 		}
 	}
 
@@ -42,7 +39,7 @@ public class Placable : MonoBehaviour {
 }
 
 
-/*[CustomEditor(typeof(Placable))]
+[CustomEditor(typeof(Placable))]
 [CanEditMultipleObjects]
 class PlacableEditor : Editor {
 
@@ -53,11 +50,14 @@ class PlacableEditor : Editor {
 	}
 
 	public override void OnInspectorGUI(){
+		base.OnInspectorGUI ();
 		if (placable.Cell) {
-			//placable.Cell = EditorGUILayout.Vector2Field ("Cell : ", Cell.Matrice.getPositionFromCell(placable.Cell));
+			placable.Cell = MeshMap.Instance.getCellFromPosition (EditorGUILayout.Vector2Field ("Cell : ", placable.Cell.Matrice.getPositionFromCell (placable.Cell).Value));
+		} else {
+			placable.Cell = MeshMap.Instance.getCellFromPosition( EditorGUILayout.Vector2Field ("Cell : ", Vector2.zero) );
 		}
 		//EditorGUILayout.LabelField ("X : "+position.x.ToString());
 		//EditorGUILayout.LabelField ("Y : "+position.y.ToString());
 	}
 
-}*/
+}
