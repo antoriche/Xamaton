@@ -9,9 +9,6 @@ public class MeshMap : Singleton<MeshMap>{
 	Map Map; // TODO : Width/Height = 0 (File read after Start() )
 
 	[SerializeField]
-	Cell cellPrefab;
-
-	[SerializeField]
 	PathfindingAlgorithm pathfindingAlgorithm;
 
 	private Dictionary<Int32, Cell> cells;
@@ -21,13 +18,14 @@ public class MeshMap : Singleton<MeshMap>{
 	void Start () {
 		int i = 0;
 		cells = new Dictionary<Int32,Cell> ();
+		print (Map.Width+" ; "+Map.Height);
 		for (int x = 0; x < Map.Width; x++) {
 			for (int y = 0; y < Map.Height; y++) {
 				Cell[] neighbors = new Cell[4];
 				neighbors [Cell.LEFT] = (x==0)?null:cells[i-1];
 				neighbors [Cell.TOP] = getCellFromPosition (new Vector2(x,y-1));
 				//Cell cell = new Cell (i,neighbors);
-				Cell cell = Instantiate(cellPrefab,getPositionFromCell(i)+new Vector2(0.5f,0.5f),Quaternion.identity).GetComponent<Cell>();
+				Cell cell = Instantiate(Map.getCell(x,y),getPositionFromCell(i)+new Vector2(0.5f,0.5f),Quaternion.identity).GetComponent<Cell>();
 				cell.init (i,neighbors);
 				cells.Add (cell.Id,cell);
 				//cell.setPosition (getLocationFromCell(cell));

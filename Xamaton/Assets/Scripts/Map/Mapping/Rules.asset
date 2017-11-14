@@ -11,6 +11,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd2a2ee578eff7744a54ae3922956f3e, type: 3}
   m_Name: Rules
   m_EditorClassIdentifier: 
-  defaultCell: {fileID: 114192827780210896, guid: 065437b97c651284ab666a56ab8ffac9,
+  defaultCell: {fileID: 114192827780210896, guid: 751f9aa135d7ca74bba79bcb820ac2d1,
     type: 2}
-  rules: []
+  rules:
+  - character: 83
+    cell: {fileID: 114192827780210896, guid: 065437b97c651284ab666a56ab8ffac9, type: 2}
