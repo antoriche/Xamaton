@@ -18,7 +18,6 @@ public class MeshMap : Singleton<MeshMap>{
 	void Start () {
 		int i = 0;
 		cells = new Dictionary<Int32,Cell> ();
-		print (Map.Width+" ; "+Map.Height);
 		for (int x = 0; x < Map.Width; x++) {
 			for (int y = 0; y < Map.Height; y++) {
 				Cell[] neighbors = new Cell[4];
@@ -91,7 +90,33 @@ public class MeshMap : Singleton<MeshMap>{
 	 * Is called when cell.Select change State.
 	 */
 	private void ClickOnCell(Cell cell){
-		
+		if(cell.Select)
+			makePath ();
+	}
+
+	//this method will test pathfinding feature
+	private void makePath(){
+		Cell first = null, second = null;
+		foreach (Cell c in cells.Values) {
+			if (c.Select) {
+				if (first) {
+					if (second) {
+						first.Select = false;
+						second.Select = false;
+						c.Select = false;
+					} else {
+						second = c;
+					}
+				} else {
+					first = c;
+				}
+			}
+		}
+		if (first && second && first.Select && second.Select) {
+			foreach (Cell c in pathfindingAlgorithm.getPath(first,second)) {
+				c.Select = true;
+			}
+		}
 	}
 
 	/*
@@ -115,6 +140,11 @@ public class MeshMap : Singleton<MeshMap>{
 					cell.Select = !cell.Select;
 					ClickOnCell (cell);
 				}
+			}
+		}else {
+			if (mouseOver) {
+				mouseOver.MouseOver = false;
+				mouseOver = null;
 			}
 		}
 	}

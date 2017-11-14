@@ -53,6 +53,11 @@ public class Cell : MonoBehaviour{
 	public Cell Left{ get { return NeighborAt (LEFT); } }
 	public Cell Right{ get { return NeighborAt (RIGHT); } }
 
+	void Start(){
+		defaultColor = gameObject.GetComponentInChildren<Renderer> ().material.color;
+		defaultTexture = gameObject.GetComponentInChildren<Renderer> ().material.mainTexture;
+	}
+
 	public bool BindOn(Cell cell, int at){
 		if (cell == null || at < 0 || at >= 4){
 			return false;
@@ -92,11 +97,16 @@ public class Cell : MonoBehaviour{
 		}
 	}
 
+
+	private Color defaultColor;
+	private Texture defaultTexture;
 	private void RefreshRender(){
 		Renderer renderer = gameObject.GetComponentInChildren<Renderer> ();
 		if (renderer){
-			renderer.material.color = select_ ? Color.blue : mouseOver_ ? Color.green : Color.white;
-			renderer.material.mainTexture = Content ? Content.Image : renderer.material.mainTexture ;
+			Color32 color = (select_ ? Color.blue : mouseOver_ ? Color.green : defaultColor);
+			if(select_ || mouseOver_)color.a = 127;
+			renderer.material.color = color;
+			//renderer.material.mainTexture = Content ? Content.Image : defaultTexture ;
 		}
 	}
 
