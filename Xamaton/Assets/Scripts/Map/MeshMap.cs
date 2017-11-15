@@ -6,13 +6,19 @@ using System;
 public class MeshMap : Singleton<MeshMap>{
 
 	[SerializeField]
-	Map Map; // TODO : Width/Height = 0 (File read after Start() )
+	Map Map;
 
 	[SerializeField]
 	PathfindingAlgorithm pathfindingAlgorithm;
 
 	private Dictionary<Int32, Cell> cells;
 	private Cell mouseOver;
+
+	private long version;
+	public long Version{
+		get{ return version;}
+		set{ version++; }
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -32,7 +38,8 @@ public class MeshMap : Singleton<MeshMap>{
 			//neighbors [Cell.LEFT] = (x==0)?null:cells[i-1];
 			//neighbors [Cell.TOP] = getCellFromPosition (new Vector2(x,y-1));
 			c.BindOn (getCellFromId(c.Id+Map.Width),Cell.TOP);
-			c.BindOn ((c.Id+1)%Map.Height>=Map.Width?null:getCellFromId(c.Id+1),Cell.RIGHT);
+			c.BindOn ((c.Id)%(Map.Height)>=Map.Width-1?null:getCellFromId(c.Id+1),Cell.RIGHT);
+			Debug.Log (c.Id+" : "+((c.Id) % (Map.Height)));
 		}
 
 		/*foreach (Cell c in cells.Values) {

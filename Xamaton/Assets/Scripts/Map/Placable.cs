@@ -18,7 +18,7 @@ public class Placable : MonoBehaviour {
 			return cell_;
 		}
 		set{
-			if (!value || value.Content && value.Content != this) {
+			if (value == null || value.Content && value.Content != this) {
 				return; //Exception ?
 			}
 			Cell old = cell_;
@@ -47,14 +47,15 @@ public class Placable : MonoBehaviour {
 		}
 	}
 
-	private void refreshRender(){
+	protected void refreshRender(){
 		if (!Cell) {
 			Debug.LogWarning (gameObject.name+" Placable has no cell !");
 			return;
 		}
-		this.transform.position = Cell.transform.position;
+		//this.transform.position = Cell.transform.position;
+
 		Renderer renderer = gameObject.GetComponentInChildren<Renderer> ();
-		renderer.material.mainTexture = Image;
+		//renderer.material.mainTexture = Image;
 	}
 }
 

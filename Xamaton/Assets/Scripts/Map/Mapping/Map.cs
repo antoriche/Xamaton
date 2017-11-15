@@ -18,6 +18,9 @@ public class Map : ScriptableObject {
 		txtMap = mapFile.text.Split (new char[]{'\n'});
 		height_ = txtMap.Length;
 		width_ = txtMap [0].Length-1;
+		if (rules.DefaultCell == null) {
+			Debug.LogWarning ("Default Cell is Null");
+		}
 		/*foreach (string line in txtMap) {
 			string l=line.Replace(System.Environment.NewLine,"").Replace(((char)13).ToString(),"");
 			if ((l.ToCharArray().Length)-1 > width_) {
@@ -42,7 +45,8 @@ public class Map : ScriptableObject {
 
 	public Cell getCell(int x, int y){
 		try{
-			return rules.getCell(txtMap [Width-x-1].ToCharArray () [y]);
+			Cell ret = rules.getCell(txtMap [Width-x-1].ToCharArray () [y]);
+			return ret ? ret : rules.DefaultCell;
 		}catch(KeyNotFoundException){
 			return rules.DefaultCell;
 		}
