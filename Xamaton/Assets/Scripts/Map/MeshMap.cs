@@ -107,10 +107,10 @@ public class MeshMap : Singleton<MeshMap>{
 		if(cell.Select)
 			makePath ();
 		
-		if (ActionManager.Instance.Action)
+		/*if (ActionManager.Instance.Action)
 			ActionManager.Instance.Action.ClickOnCell (cell);
 		else
-			cell.Select = false;
+			cell.Select = false;*/
 	}
 
 	//this method will test pathfinding feature
