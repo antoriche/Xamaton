@@ -7,22 +7,22 @@ using System;
 public class Cell : MonoBehaviour{
 	public const int TOP = 0, RIGHT = 1, BOTTOM = 2, LEFT = 3;
 	Cell[] neighbors = new Cell[4];
-	[SerializeField]
+	//[SerializeField]
 	private int id_;
 	public int Id{ get{ return id_; } }
 	public MeshMap Matrice { get { return gameObject.GetComponentInParent<MeshMap>(); } }
 
-
-	private Placable content_;
-	public Placable Content{
+	[SerializeField]
+	private Placable content;
+	public virtual Placable Content{
 		get{
-			return content_;
+			return content;
 		}
 		set{
-			Placable old = content_;
-			content_ = value;
-			if(content_ && content_.Cell != this)
-				content_.Cell = this;
+			Placable old = content;
+			content = value;
+			if(content && content.Cell != this)
+				content.Cell = this;
 			if(old && old.Cell != null)
 				old.Cell = null;
 			RefreshRender ();
@@ -36,6 +36,7 @@ public class Cell : MonoBehaviour{
 				BindOn(neighbors[i],i);
 			}
 		}
+
 		//Plane = GameObject.CreatePrimitive (PrimitiveType.Plane);
 		//Plane.transform.localScale = Vector3.one * 0.1f * SIZE;
 		//Plane.transform.Rotate (Vector3.left*90);
@@ -106,6 +107,7 @@ public class Cell : MonoBehaviour{
 			Color32 color = (select_ ? Color.blue : mouseOver_ ? Color.green : defaultColor);
 			if(select_ || mouseOver_)color.a = 127;
 			renderer.material.color = color;
+
 			//renderer.material.mainTexture = Content ? Content.Image : defaultTexture ;
 		}
 	}
@@ -123,8 +125,9 @@ class CellEditor : Editor {
 	}
 
 	public override void OnInspectorGUI(){
+		base.OnInspectorGUI ();
 		EditorGUILayout.LabelField ("ID : ",cell.Id.ToString());
-		Vector2 position = cell.Matrice.getPositionFromCell (cell).Value;
+		Vector2 position = cell.Matrice?cell.Matrice.getPositionFromCell (cell).Value:Vector2.zero;
 		EditorGUILayout.LabelField ("Position : ","X : "+position.x.ToString()+"  Y : "+position.y.ToString());
 	}
 

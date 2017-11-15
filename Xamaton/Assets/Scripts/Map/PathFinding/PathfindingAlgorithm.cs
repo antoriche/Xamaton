@@ -4,6 +4,6 @@ using UnityEngine;
 
 public abstract class PathfindingAlgorithm : ScriptableObject {
 
-	public abstract IEnumerable<Cell> getPath (Cell c1, Cell c2);
+	public abstract List<Cell> getPath (Cell c1, Cell c2);
 
 }

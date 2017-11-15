@@ -119,6 +119,12 @@ public class MeshMap : Singleton<MeshMap>{
 		}
 	}
 
+	public void UnselectAll(){
+		foreach (Cell c in cells.Values) {
+			c.Select = false;
+		}
+	}
+
 	/*
 	 * Manage cells states from mouse behaviour
 	 */

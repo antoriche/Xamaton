@@ -6,10 +6,10 @@ using UnityEngine.Scripting;
 [CreateAssetMenu(menuName="Pathfinding Algorithm/A*")]
 public class AStar : PathfindingAlgorithm {
 
-	public override IEnumerable<Cell> getPath (Cell c1, Cell c2){
-		LinkedList<Cell> list = new LinkedList<Cell> ();
-		list.AddFirst (c1);
-		list.AddLast (c2);
+	public override List<Cell> getPath (Cell c1, Cell c2){
+		List<Cell> list = new List<Cell> ();
+		list.Add (c1);
+		list.Add (c2);
 		return list;
 	}
 

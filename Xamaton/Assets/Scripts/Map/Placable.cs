@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System;
 
 public class Placable : MonoBehaviour {
 	[SerializeField]
 	Texture2D image;
 
-	//[SerializeField]
-	//Vector2 cellPosition; //used for initialisation
+	[SerializeField]
+	Vector2 initialPosition; //used for initialisation
 
-	//[SerializeField]
+	[SerializeField]
 	private Cell cell_;
 	public Cell Cell{
 		get{
@@ -32,7 +33,12 @@ public class Placable : MonoBehaviour {
 	}
 
 	void Start(){
-		
+		if (!Cell) {
+			Cell = MeshMap.Instance.getCellFromPosition (initialPosition);
+		} else {
+			Cell = Cell;
+		}
+		refreshRender ();
 	}
 
 	public Texture2D Image{
@@ -41,15 +47,11 @@ public class Placable : MonoBehaviour {
 		}
 	}
 
-	public bool Move(int direction){
-		Cell c = Cell.NeighborAt (direction);
-		if (!c)
-			return false;
-		Cell = c;
-		return true;
-	}
-
 	private void refreshRender(){
+		if (!Cell) {
+			Debug.LogWarning (gameObject.name+" Placable has no cell !");
+			return;
+		}
 		this.transform.position = Cell.transform.position;
 		Renderer renderer = gameObject.GetComponentInChildren<Renderer> ();
 		renderer.material.mainTexture = Image;
@@ -73,8 +75,11 @@ class PlacableEditor : Editor {
 	public override void OnInspectorGUI(){
 		base.OnInspectorGUI ();
 		if (placable.Cell) {
-			placable.Cell = MeshMap.Instance.getCellFromPosition (EditorGUILayout.Vector2Field ("Cell : ", placable.Cell.Matrice.getPositionFromCell (placable.Cell).Value));
-			EditorGUILayout.LabelField ("Cell ID : ",placable.Cell.Id.ToString());
+			Nullable<Vector2> position = MeshMap.Instance.getPositionFromCell (placable.Cell);
+			if (position.HasValue) {
+				placable.Cell = MeshMap.Instance.getCellFromPosition (EditorGUILayout.Vector2Field ("Cell : ", position.Value));
+				EditorGUILayout.LabelField ("Cell ID : ", placable.Cell.Id.ToString ());
+			}
 		} else {
 			//cellPosition =  EditorGUILayout.Vector2Field ("Cell : ", cellPosition) ;
 			//placable.Cell = MeshMap.Instance.getCellFromPosition (cellPosition);
