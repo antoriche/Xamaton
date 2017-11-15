@@ -16,22 +16,36 @@ public class MeshMap : Singleton<MeshMap>{
 
 	// Use this for initialization
 	void Start () {
-		int i = 0;
 		cells = new Dictionary<Int32,Cell> ();
+		int i = 0;
 		for (int x = 0; x < Map.Width; x++) {
 			for (int y = 0; y < Map.Height; y++) {
-				Cell[] neighbors = new Cell[4];
-				neighbors [Cell.LEFT] = (x==0)?null:cells[i-1];
-				neighbors [Cell.TOP] = getCellFromPosition (new Vector2(x,y-1));
-				//Cell cell = new Cell (i,neighbors);
-				Cell cell = Instantiate(Map.getCell(x,y),getPositionFromCell(i)+new Vector2(0.5f,0.5f),Quaternion.identity).GetComponent<Cell>();
-				cell.init (i,neighbors);
+				Cell cell = Instantiate (Map.getCell (x, y), getPositionFromCell (i) + new Vector2 (0.5f, 0.5f), Quaternion.identity).GetComponent<Cell> ();
+				cell.init (i, null);
 				cells.Add (cell.Id,cell);
-				//cell.setPosition (getLocationFromCell(cell));
 				cell.transform.parent = gameObject.transform;
 				i++;
 			}
 		}
+		foreach (Cell c in cells.Values) {
+			Cell[] neighbors = new Cell[4];
+			//neighbors [Cell.LEFT] = (x==0)?null:cells[i-1];
+			//neighbors [Cell.TOP] = getCellFromPosition (new Vector2(x,y-1));
+			c.BindOn (getCellFromId(c.Id+Map.Width),Cell.TOP);
+			c.BindOn ((c.Id+1)%Map.Height>=Map.Width?null:getCellFromId(c.Id+1),Cell.RIGHT);
+		}
+
+		/*foreach (Cell c in cells.Values) {
+			if(
+				!c ||
+				c.Left.Right != c ||
+				c.Right.Left != c ||
+				c.Top.Bottom != c ||
+				c.Bottom.Top != c
+			){
+				Debug.LogWarning("Bug cell "+c.Id);
+			}
+		}*/
 		PutCameraOverMap ();
 	}
 
@@ -92,6 +106,11 @@ public class MeshMap : Singleton<MeshMap>{
 	private void ClickOnCell(Cell cell){
 		if(cell.Select)
 			makePath ();
+		
+		if (ActionManager.Instance.Action)
+			ActionManager.Instance.Action.ClickOnCell (cell);
+		else
+			cell.Select = false;
 	}
 
 	//this method will test pathfinding feature

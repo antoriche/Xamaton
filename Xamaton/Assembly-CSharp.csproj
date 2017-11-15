@@ -46,6 +46,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Actions\Action.cs" />
+     <Compile Include="Assets\Scripts\Actions\ActionManager.cs" />
+     <Compile Include="Assets\Scripts\Actions\ActionMapper.cs" />
+     <Compile Include="Assets\Scripts\Actions\MovementAction.cs" />
      <Compile Include="Assets\Scripts\Map\Cell.cs" />
      <Compile Include="Assets\Scripts\Map\Deplacable.cs" />
      <Compile Include="Assets\Scripts\Map\Mapping\Map.cs" />
