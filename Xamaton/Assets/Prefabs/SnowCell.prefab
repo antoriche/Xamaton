@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4732010683275550}
   - component: {fileID: 114192827780210896}
   m_Layer: 0
-  m_Name: Cell
+  m_Name: SnowCell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -136,3 +136,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11494446d982b3b4081d4b76e8eb3c24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id_: 0
