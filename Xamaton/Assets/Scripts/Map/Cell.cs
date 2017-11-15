@@ -96,7 +96,7 @@ public class Cell : MonoBehaviour{
 		Renderer renderer = gameObject.GetComponentInChildren<Renderer> ();
 		if (renderer){
 			renderer.material.color = select_ ? Color.blue : mouseOver_ ? Color.green : Color.white;
-			renderer.material.mainTexture = Content.Image;
+			//renderer.material.mainTexture = Content.Image;
 		}
 	}
 
