@@ -114,6 +114,7 @@ public class MeshMap : Singleton<MeshMap>{
 		}
 		if (first && second && first.Select && second.Select) {
 			foreach (Cell c in pathfindingAlgorithm.getPath(first,second)) {
+				Debug.Log (c.Id);
 				c.Select = true;
 			}
 		}

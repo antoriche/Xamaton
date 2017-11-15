@@ -30,6 +30,8 @@ public class AStar : PathfindingAlgorithm {
 		// Add initial node (containing cell)
 		openList.Add(n1);
 
+		int j = 0;
+
 		// while there is a cell in openList
 		while (openList.Count != 0) {
 
@@ -39,17 +41,19 @@ public class AStar : PathfindingAlgorithm {
 			// node do
 			closedList.Add (currentNode);
 
-			if (currentNode.Equals(n2)) {
+			if (currentNode.Equals(n2) || j > 100) {
 				return ConstructPath(closedList);
 			}
 			for (int i = 0; i < 4; i++) {
 				// obtain neighbor
 				Cell neightborCell = currentNode.cell.NeighborAt(i);
 
+
 				// if border or cell doesn't exists => ignore
 				if (neightborCell == null) continue;
 				// Convert Cell to Node
 				Node neighbor = new Node(neightborCell);
+				Debug.Log (currentNode.cell.Id + " (" + i + ") : " + neighbor.cell.Id);
 
 				// TODO isObstacle
 				// if already in closedList => ignore
@@ -77,6 +81,7 @@ public class AStar : PathfindingAlgorithm {
 					openList.Add(neighbor);
 				}
 			}
+			j++;
 			// Sort openlist by costF ascending
 			openList.Sort (nodeComparer);
 		}
