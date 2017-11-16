@@ -20,12 +20,16 @@ public class Cell : MonoBehaviour{
 		}
 		set{
 			Placable old = content;
+			if (old != null && !old.Equals(value)) {
+				//throw new System.InvalidOperationException ("There is already an object on Cell "+Id);
+				return;
+			}
 			content = value;
-			if(content && content.Cell != this)
+			if(content != null && !content.Cell.Equals(this))
 				content.Cell = this;
-			if(old && old.Cell != null)
-				old.Cell = null;
-				Matrice.Version++;
+			/*if(old && old.Cell != null)
+				old.Cell = null;*/
+			Matrice.Version++;
 			RefreshRender ();
 		}
 	}

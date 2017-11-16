@@ -39,7 +39,6 @@ public class MeshMap : Singleton<MeshMap>{
 			//neighbors [Cell.TOP] = getCellFromPosition (new Vector2(x,y-1));
 			c.BindOn (getCellFromId(c.Id+Map.Width),Cell.TOP);
 			c.BindOn ((c.Id)%(Map.Height)>=Map.Width-1?null:getCellFromId(c.Id+1),Cell.RIGHT);
-			Debug.Log (c.Id+" : "+((c.Id) % (Map.Height)));
 		}
 
 		/*foreach (Cell c in cells.Values) {
@@ -111,13 +110,13 @@ public class MeshMap : Singleton<MeshMap>{
 	 * Is called when cell.Select change State.
 	 */
 	private void ClickOnCell(Cell cell){
-		if(cell.Select)
-			makePath ();
+		/*if(cell.Select)
+			makePath ();*/
 		
-		/*if (ActionManager.Instance.Action)
+		if (ActionManager.Instance.Action)
 			ActionManager.Instance.Action.ClickOnCell (cell);
 		else
-			cell.Select = false;*/
+			cell.Select = false;
 	}
 
 	//this method will test pathfinding feature
