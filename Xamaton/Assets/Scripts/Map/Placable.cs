@@ -6,7 +6,7 @@ using System;
 
 public class Placable : MonoBehaviour {
 	[SerializeField]
-	Texture2D image;
+	public Texture2D Image;
 
 	[SerializeField]
 	Vector2 initialPosition; //used for initialisation
@@ -18,12 +18,15 @@ public class Placable : MonoBehaviour {
 			return cell_;
 		}
 		set{
-			if (!value || value.Content && value.Content != this) {
+			if (value == null)
+				return;
+			if ((value.Content != null && !value.Content.Equals(this))) {
+				throw new System.InvalidOperationException ("Placable "+this.name+" must have a Cell");
 				return; //Exception ?
 			}
 			Cell old = cell_;
 			cell_ = value;
-			if (cell_ && cell_.Content != this) {
+			if (cell_ != null && !this.Equals(cell_.Content)) {
 				cell_.Content = this;
 			}
 			if(old && old.Content != null)
@@ -41,18 +44,13 @@ public class Placable : MonoBehaviour {
 		refreshRender ();
 	}
 
-	public Texture2D Image{
-		get{
-			return image;
-		}
-	}
-
-	private void refreshRender(){
+	protected void refreshRender(){
 		if (!Cell) {
-			Debug.LogWarning (gameObject.name+" Placable has no cell !");
+			Debug.LogError (gameObject.name+" Placable has no cell !");
 			return;
 		}
 		this.transform.position = Cell.transform.position;
+
 		Renderer renderer = gameObject.GetComponentInChildren<Renderer> ();
 		renderer.material.mainTexture = Image;
 	}

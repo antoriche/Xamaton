@@ -137,7 +137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11494446d982b3b4081d4b76e8eb3c24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  content: {fileID: 114692458220531514}
+  content: {fileID: 0}
 --- !u!114 &114692458220531514
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -149,5 +149,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46876524d0ef6264c9b0320598ac44c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  image: {fileID: 10906, guid: 0000000000000000f000000000000000, type: 0}
+  Image: {fileID: 0}
+  initialPosition: {x: 0, y: 0}
   cell_: {fileID: 114232339293327594}

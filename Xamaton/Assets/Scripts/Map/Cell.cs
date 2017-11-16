@@ -20,11 +20,16 @@ public class Cell : MonoBehaviour{
 		}
 		set{
 			Placable old = content;
+			if (old != null && !old.Equals(value)) {
+				//throw new System.InvalidOperationException ("There is already an object on Cell "+Id);
+				return;
+			}
 			content = value;
-			if(content && content.Cell != this)
+			if(content != null && !content.Cell.Equals(this))
 				content.Cell = this;
-			if(old && old.Cell != null)
-				old.Cell = null;
+			/*if(old && old.Cell != null)
+				old.Cell = null;*/
+			Matrice.Version++;
 			RefreshRender ();
 		}
 	}
@@ -105,11 +110,25 @@ public class Cell : MonoBehaviour{
 		Renderer renderer = gameObject.GetComponentInChildren<Renderer> ();
 		if (renderer){
 			Color32 color = (select_ ? Color.blue : mouseOver_ ? Color.green : defaultColor);
-			if(select_ || mouseOver_)color.a = 127;
+			if(select_ || mouseOver_)color.a = 100;
 			renderer.material.color = color;
 
 			//renderer.material.mainTexture = Content ? Content.Image : defaultTexture ;
 		}
+	}
+
+	public override bool Equals(System.Object obj) 
+	{
+		// Check for null values and compare run-time types.
+		if (obj == null || GetType() != obj.GetType()) 
+			return false;
+
+		Cell c = (Cell)obj;
+		return (c.Id == this.Id);
+	}
+	public override int GetHashCode() 
+	{
+		return Id;
 	}
 
 }

@@ -8,6 +8,9 @@ public class Deplacable : Placable {
 
 	[SerializeField]
 	PathfindingAlgorithm pathfindingAlgorithm;
+	public PathfindingAlgorithm PathfindingAlgorithm{
+		get{ return pathfindingAlgorithm; }
+	}
 
 	[SerializeField]
 	int PM = int.MaxValue;
@@ -32,10 +35,18 @@ public class Deplacable : Placable {
 	}
 	public bool MoveToward(Cell cell){
 		List<Cell> path = pathfindingAlgorithm.getPath (this.Cell,cell);
-		if (path == null)
+		if (path == null || PM <= 0)
 			return false;
 		Cell = path.ToArray()[Mathf.Min(path.Count,PM)];
 		PM -= Mathf.Min (path.Count, PM);
+		return true;
+	}
+	public bool MoveOneToward(Cell cell){
+		List<Cell> path = pathfindingAlgorithm.getPath (this.Cell,cell);
+		if (path == null || path.Count == 0 || PM <= 0)
+			return false;
+		Cell = path.ToArray()[0];
+		PM -= 1;
 		return true;
 	}
 
