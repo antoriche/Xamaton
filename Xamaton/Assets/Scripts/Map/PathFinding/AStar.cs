@@ -51,6 +51,8 @@ public class AStar : PathfindingAlgorithm {
 				// Convert Cell to Node
 				Node neighbor = new Node(neightborCell);
 
+				//Debug.Log(currentNode.cell.Id + " ("+ i +") : " + neighbor.cell.Id);
+
 				// TODO isObstacle
 				// if already in closedList => ignore
 				if (closedList.Contains(neighbor)) continue;
@@ -65,6 +67,7 @@ public class AStar : PathfindingAlgorithm {
 				if (openList.Contains(neighbor)) {
 					int index = openList.IndexOf (neighbor);
 					Node n = openList[index];
+					//Debug.Log (neighbor.cell.Id + " " + n.cell.Id);
 					// if neighbor is less than old node
 					if (neighbor.costF < n.costF) {
 						// Delete old node
@@ -79,6 +82,11 @@ public class AStar : PathfindingAlgorithm {
 			}
 			// Sort openlist by costF ascending
 			openList.Sort (nodeComparer);
+			/*string open = "";
+			foreach(Node n in openList) {
+				open += n.cell.Id+":"+n.costF + " ";
+			}
+			Debug.Log (open);*/
 		}
 		Debug.Log ("[Pathfinding] Path not found");
 		return null;
@@ -148,6 +156,10 @@ public class AStar : PathfindingAlgorithm {
 			if (this.cell.Id == n.cell.Id)
 				return true;
 			return false;
+		}
+		// For List.Contains
+		public override bool Equals(object o) {
+			return Equals (o as Node);
 		}
 	}
 
