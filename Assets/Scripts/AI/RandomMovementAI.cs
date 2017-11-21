@@ -11,17 +11,17 @@ public class RandomMovementAI : AI {
 	#region implemented abstract members of AI
 	public override void Execute (GameObject obj)
 	{
-		if (!obj.GetComponent<Deplacable>()) {
+		if (!obj.GetComponent<Deplacable> ()) {
 			throw new MissingComponentException ("RandomMovementAI : " + obj.name + " is not Deplacable.");
-			return;
-		}
-		int randomPM = Random.Range (1, 4);
-		Deplacable dep = obj.GetComponent<Deplacable> ();
-		List<Cell> cells = dep.PathfindingAlgorithm.CellRadius (dep.Cell, randomPM);
-		// Choice of Detination
-		Cell randomDestination = cells[Random.Range (0, cells.Count - 1)];
+		} else {
+			int randomPM = Random.Range (1, 4);
+			Deplacable dep = obj.GetComponent<Deplacable> ();
+			List<Cell> cells = dep.PathfindingAlgorithm.CellRadius (dep.Cell, randomPM);
+			// Choice of Detination
+			Cell randomDestination = cells [Random.Range (0, cells.Count - 1)];
 
-		dep.MoveAt (randomDestination);
+			dep.MoveAt (randomDestination);
+		}
 	}
 	#endregion
 }
