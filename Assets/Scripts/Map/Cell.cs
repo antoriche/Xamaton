@@ -6,7 +6,7 @@ using System;
 
 public class Cell : MonoBehaviour{
 	public const int TOP = 0, RIGHT = 1, BOTTOM = 2, LEFT = 3;
-	Cell[] neighbors = new Cell[4];
+	protected Cell[] neighbors = new Cell[4];
 	//[SerializeField]
 	private int id_;
 	public int Id{ get{ return id_; } }
@@ -43,6 +43,10 @@ public class Cell : MonoBehaviour{
 		//Plane = GameObject.CreatePrimitive (PrimitiveType.Plane);
 		//Plane.transform.localScale = Vector3.one * 0.1f * SIZE;
 		//Plane.transform.Rotate (Vector3.left*90);
+	}
+
+	public int CountNeighbors(){
+		return neighbors.Length;
 	}
 
 	public Cell NeighborAt(int at){

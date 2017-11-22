@@ -11,8 +11,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd2a2ee578eff7744a54ae3922956f3e, type: 3}
   m_Name: Rules
   m_EditorClassIdentifier: 
-  defaultCell: {fileID: 114232339293327594, guid: 751f9aa135d7ca74bba79bcb820ac2d1,
+  defaultCell: {fileID: 114257784376289704, guid: 1081caba1e6ee7440a45eb57b61f1283,
     type: 2}
   rules:
   - character: 83
     cell: {fileID: 114192827780210896, guid: 065437b97c651284ab666a56ab8ffac9, type: 2}
+  - character: 84
+    cell: {fileID: 114595760034705048, guid: c6b94522969b0bd4590985fc63bf871a, type: 2}
+  - character: 88
+    cell: {fileID: 114232339293327594, guid: 751f9aa135d7ca74bba79bcb820ac2d1, type: 2}
+  - character: 71
+    cell: {fileID: 114257784376289704, guid: 1081caba1e6ee7440a45eb57b61f1283, type: 2}

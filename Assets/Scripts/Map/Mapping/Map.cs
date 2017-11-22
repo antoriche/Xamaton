@@ -23,7 +23,7 @@ public class Map : ScriptableObject {
 			Debug.LogWarning ("Default Cell is Null");
 		}
 		if (width_ != Height) {
-			Debug.LogError ("Currently, Map must be a square");
+			Debug.LogError ("Currently, Map must be a square (whidth,height) => ("+Width+","+Height+")");
 		}
 		/*foreach (string line in txtMap) {
 			string l=line.Replace(System.Environment.NewLine,"").Replace(((char)13).ToString(),"");
