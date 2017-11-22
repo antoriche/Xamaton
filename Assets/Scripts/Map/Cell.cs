@@ -57,7 +57,7 @@ public class Cell : MonoBehaviour{
 	public Cell Left{ get { return NeighborAt (LEFT); } }
 	public Cell Right{ get { return NeighborAt (RIGHT); } }
 
-	void Start(){
+	void Awake(){
 		defaultColor = gameObject.GetComponentInChildren<Renderer> ().material.color;
 		defaultTexture = gameObject.GetComponentInChildren<Renderer> ().material.mainTexture;
 	}

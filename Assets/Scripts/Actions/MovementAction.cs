@@ -10,6 +10,8 @@ public class MovementAction : Action {
 	[SerializeField]
 	float speed = 1;
 
+	Coroutine coroutine;
+
 	public override void Enable ()
 	{
 		base.Enable ();
@@ -17,8 +19,8 @@ public class MovementAction : Action {
 	}
 
 	public override void ClickOnCell (Cell c){
-
-		ActionManager.Instance.StartCoroutine(MoveOne(c));
+		if(coroutine!=null)ActionManager.Instance.StopCoroutine(coroutine);
+		coroutine = ActionManager.Instance.StartCoroutine(MoveOne(c));
 		Debug.Log ("Movement");
 		c.Select = false;
 	}
