@@ -6,7 +6,7 @@ using System;
 
 public class Cell : MonoBehaviour{
 	public const int TOP = 0, RIGHT = 1, BOTTOM = 2, LEFT = 3;
-	Cell[] neighbors = new Cell[4];
+	protected Cell[] neighbors = new Cell[4];
 	//[SerializeField]
 	private int id_;
 	public int Id{ get{ return id_; } }
@@ -22,7 +22,7 @@ public class Cell : MonoBehaviour{
 			Placable old = content;
 			content = value;
 
-			if (content && !content.Cell.Equals (this)) {
+			if (content && !this.Equals(content.Cell)) {
 				content.Cell = this;
 			}
 			/*if(old && old.Cell != null)
@@ -45,6 +45,10 @@ public class Cell : MonoBehaviour{
 		//Plane.transform.Rotate (Vector3.left*90);
 	}
 
+	public int CountNeighbors(){
+		return neighbors.Length;
+	}
+
 	public Cell NeighborAt(int at){
 		try{
 			return neighbors [at];
@@ -57,7 +61,7 @@ public class Cell : MonoBehaviour{
 	public Cell Left{ get { return NeighborAt (LEFT); } }
 	public Cell Right{ get { return NeighborAt (RIGHT); } }
 
-	void Start(){
+	void Awake(){
 		defaultColor = gameObject.GetComponentInChildren<Renderer> ().material.color;
 		defaultTexture = gameObject.GetComponentInChildren<Renderer> ().material.mainTexture;
 	}

@@ -11,6 +11,9 @@ public class MeshMap : Singleton<MeshMap>{
 	[SerializeField]
 	PathfindingAlgorithm pathfindingAlgorithm;
 
+	[SerializeField]
+	Deplacable player;
+
 	private Dictionary<Int32, Cell> cells;
 	private Cell mouseOver;
 
@@ -22,6 +25,9 @@ public class MeshMap : Singleton<MeshMap>{
 	}
 	public int WidthMap {
 		get { return Map.Width; }
+	}
+	public Deplacable Player{
+		get{ return player; }
 	}
 
 	private long version;
@@ -36,7 +42,28 @@ public class MeshMap : Singleton<MeshMap>{
 	}
 
 	// Use this for initialization
-	void Start () {
+	void Start(){
+		player = Instantiate (player.gameObject, new Vector3(Map.DefaultPlayerPosition.x,Map.DefaultPlayerPosition.y,-1), Quaternion.identity).GetComponent<Deplacable> ();
+		DontDestroyOnLoad (player);
+
+		Load (Map,Map.DefaultPlayerPosition);
+
+		this._ready = true;
+	}
+
+	void Unload(){
+		Version++;
+		if (cells == null)
+			return;
+		foreach (Cell cell in cells.Values) {
+			//Destroy (cell.Content.gameObject);
+			Destroy (cell.gameObject);
+		}
+	}
+
+	public void Load (Map map, Vector2 playerPosition) {
+		Unload ();
+		this.Map = map;
 		cells = new Dictionary<Int32,Cell> ();
 
 		int i = 0;
@@ -57,6 +84,11 @@ public class MeshMap : Singleton<MeshMap>{
 			c.BindOn ((c.Id)%(Map.Height)>=Map.Width-1?null:getCellFromId(c.Id+1),Cell.RIGHT);
 		}
 
+		foreach (TeleporterLine teleporterLine in Map.teleporters) {
+			Teleporter teleporter = getCellFromPosition (teleporterLine.origin).gameObject.AddComponent<Teleporter> ();
+			teleporter.Destination (teleporterLine.destinationMap,teleporterLine.destinationPosition);
+		}
+
 		/*foreach (Cell c in cells.Values) {
 			if(
 				!c ||
@@ -68,6 +100,9 @@ public class MeshMap : Singleton<MeshMap>{
 				Debug.LogWarning("Bug cell "+c.Id);
 			}
 		}*/
+
+		player.Cell = getCellFromPosition (playerPosition);
+
 		PutCameraOverMap ();
 		StartCoroutine (MobsSpawner.Instance.SpawnCoroutine ());
 		this._ready = true;

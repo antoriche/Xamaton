@@ -80,7 +80,12 @@ public class Placable : MonoBehaviour {
 		gameObject.transform.position = new Vector3(Cell.transform.position.x, Cell.transform.position.y, gameObject.transform.position.z);
 
 		Renderer renderer = gameObject.GetComponentInChildren<Renderer> ();
-		renderer.material.SetTexture("_MainTex", Image);
+		if (!renderer) {
+			Debug.LogError (this.name+" don't have Renderer");
+			return;
+		}
+		//renderer.material.SetTexture("_MainTex", Image);
+		renderer.material.mainTexture = Image;
 	}
 }
 

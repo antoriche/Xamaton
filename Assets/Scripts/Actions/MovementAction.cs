@@ -9,11 +9,13 @@ public class MovementAction : Action {
 	// Speed animation movement
 	private readonly float speed = 2f;
 
+	Coroutine coroutine;
+
 	public override void Enable ()
 	{
 		base.Enable ();
 	}
-
+  
 	public override void Execute (GameObject obj, List<Cell> cells) {
 
 		Deplacable dep = obj.GetComponent<Deplacable> ();
