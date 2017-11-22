@@ -11,6 +11,13 @@ public class Placable : MonoBehaviour {
 	[SerializeField]
 	Vector2 initialPosition; //used for initialisation
 
+	public Vector2 InitialPosition {
+		get { return initialPosition; }
+		set {
+			initialPosition = value;
+		}
+	}
+
 	[SerializeField]
 	private Cell cell_;
 	public Cell Cell{
@@ -38,15 +45,22 @@ public class Placable : MonoBehaviour {
 		}
 	}
 
-	/*void Start(){
+	void Start(){
 		if (!Cell){
-			Cell = MeshMap.Instance.getCellFromPosition (initialPosition);
+			// if it's a cell
+			Cell c = gameObject.GetComponent<Cell>();
+			if (c) {
+				Cell = c;
+				// else initialPosition
+			} else {
+				Cell = MeshMap.Instance.getCellFromPosition (initialPosition);
+			}
 
 		} else {
 			Cell = Cell;
 		}
 		refreshRender ();
-	}*/
+	}
 
 	/**
 	 * Place a object on the map
@@ -66,8 +80,7 @@ public class Placable : MonoBehaviour {
 		gameObject.transform.position = new Vector3(Cell.transform.position.x, Cell.transform.position.y, gameObject.transform.position.z);
 
 		Renderer renderer = gameObject.GetComponentInChildren<Renderer> ();
-		Debug.Log (renderer.material.mainTexture);
-		renderer.material.mainTexture = Image;
+		renderer.material.SetTexture("_MainTex", Image);
 	}
 }
 
