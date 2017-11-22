@@ -22,7 +22,7 @@ public class Cell : MonoBehaviour{
 			Placable old = content;
 			content = value;
 
-			if (content && !content.Cell.Equals (this)) {
+			if (content && !this.Equals(content.Cell)) {
 				content.Cell = this;
 			}
 			/*if(old && old.Cell != null)

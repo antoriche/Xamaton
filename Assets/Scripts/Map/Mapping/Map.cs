@@ -8,6 +8,8 @@ public class Map : ScriptableObject {
 	
 	public TextAsset mapFile;
 	public MapRules rules;
+	public Vector2 DefaultPlayerPosition;
+	public List<TeleporterLine> teleporters;
 
 	private string[] txtMap;
 
@@ -58,4 +60,11 @@ public class Map : ScriptableObject {
 			return rules.DefaultCell;
 		}
 	}
+}
+
+[Serializable]
+public class TeleporterLine{
+	public Vector2 origin;
+	public Map destinationMap;
+	public Vector2 destinationPosition;
 }
