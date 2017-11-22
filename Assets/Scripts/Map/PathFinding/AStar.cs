@@ -54,7 +54,7 @@ public class AStar : PathfindingAlgorithm {
 				//Debug.Log(currentNode.cell.Id + " ("+ i +") : " + neighbor.cell.Id);
 
 				// if already in closedList => ignore
-				if (neighbor.IsObstacle() || closedList.Contains(neighbor)) continue;
+				if (neighbor.IsObstacle() && !n2.Equals(neighbor) || closedList.Contains(neighbor)) continue;
 
 				// Calculation of costs
 				neighbor.costG = currentNode.costG + 1;
@@ -101,7 +101,9 @@ public class AStar : PathfindingAlgorithm {
 		 * Last in the list is destination, and first is the start
 		 */
 		Node currentNode = closedList[closedList.Count-1];
-
+		// if last is a obstacle => delete of path
+		if (currentNode.IsObstacle ())
+			currentNode = currentNode.parent;
 		// Pop parent to parent
 		while (!currentNode.Equals(closedList[0])) {
 			cells.Add (currentNode.cell);
@@ -152,7 +154,9 @@ public class AStar : PathfindingAlgorithm {
 		 * @return bool
 		 */
 		public bool IsObstacle() {
-			return (cell.Content) ? true : false;
+			if (!cell.Content)
+				return false;
+			return true;
 		}
 
 		/**

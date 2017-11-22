@@ -8,7 +8,7 @@ public abstract class Action : ScriptableObject {
 
 	}
 
-	public abstract void ClickOnCell (Cell c);
+	public abstract void Execute(GameObject obj, List<Cell> cells);
 
 	public virtual void Disable (){
 	

@@ -5,28 +5,31 @@ using System;
 
 [CreateAssetMenu(menuName="Actions/Movement")]
 public class MovementAction : Action {
-	
-	Deplacable player;
-	[SerializeField]
-	float speed = 1;
+
+	// Speed animation movement
+	private readonly float speed = 2f;
 
 	public override void Enable ()
 	{
 		base.Enable ();
-		player = GameObject.FindGameObjectWithTag ("Player").GetComponent<Deplacable>();
 	}
 
-	public override void ClickOnCell (Cell c){
+	public override void Execute (GameObject obj, List<Cell> cells) {
 
-		ActionManager.Instance.StartCoroutine(MoveOne(c));
-		Debug.Log ("Movement");
-		c.Select = false;
+		Deplacable dep = obj.GetComponent<Deplacable> ();
+		if (dep) {
+			ActionManager.Instance.StartCoroutine(MoveCases(dep, cells));
+		}
 	}
-	IEnumerator MoveOne(Cell c) {
-		while(player.MoveOneToward(c)){
-			Debug.Log ("MoveOne");
+
+	IEnumerator MoveCases(Deplacable d, List<Cell> c) {
+		// Move in progress
+		for (int i = 0; i < d.CasePerTurn; i++) {
+			d.MoveOneToward (c[i]);
 			yield return new WaitForSeconds(1/speed);
 		}
+		// Move Completed
+		ActionManager.Instance.NotifyAction ();
 	}
 
 }

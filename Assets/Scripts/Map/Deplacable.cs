@@ -12,17 +12,19 @@ public class Deplacable : Placable {
 		get{ return pathfindingAlgorithm; }
 	}
 
+	// Nbr of cases per turn
 	[SerializeField]
-	int PM = int.MaxValue;
+	int casePerTurn = 1;
+	public int CasePerTurn {
+		get { return casePerTurn; }
+	}
 
-
-	public bool MoveInDirection(int direction){
+	/*bool MoveInDirection(int direction){
 			return false;
 		Cell c = this.Cell.NeighborAt (direction);
 		if (!c || c.Content || PM <= 0)
 			return false;
 		Cell = c;
-		//PM--;
 		return true;
 	}
 	public bool MoveAt(Cell cell){
@@ -30,7 +32,6 @@ public class Deplacable : Placable {
 		if (path == null || path.Count > PM)
 			return false;
 		Cell = cell;
-		//PM -= path.Count;
 		return true;
 	}
 	public bool MoveToward(Cell cell){
@@ -38,15 +39,13 @@ public class Deplacable : Placable {
 		if (path == null || PM <= 0)
 			return false;
 		Cell = path.ToArray()[Mathf.Min(path.Count,PM)];
-		//PM -= Mathf.Min (path.Count, PM);
 		return true;
-	}
+	}*/
+
 	public bool MoveOneToward(Cell cell){
-		List<Cell> path = pathfindingAlgorithm.getPath (this.Cell,cell);
-		if (path == null || path.Count == 0 || PM <= 0)
+		if (cell == null)
 			return false;
-		Cell = path.ToArray()[0];
-		//PM -= 1;
+		Cell = cell;
 		return true;
 	}
 
