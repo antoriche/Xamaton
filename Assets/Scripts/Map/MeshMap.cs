@@ -30,10 +30,10 @@ public class MeshMap : Singleton<MeshMap>{
 		set{ version++; }
 	}
 
-	private bool _ready = false;
+	/*private bool _ready = false;
 	public bool IsReady {
 		get { return _ready; }
-	}
+	}*/
 
 	// Use this for initialization
 	void Start () {
@@ -69,7 +69,7 @@ public class MeshMap : Singleton<MeshMap>{
 			}
 		}*/
 		PutCameraOverMap ();
-		this._ready = true;
+		//this._ready = true;
 	}
 
 	/*

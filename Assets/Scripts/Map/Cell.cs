@@ -40,12 +40,6 @@ public class Cell : MonoBehaviour{
 			}
 		}
 
-		// if the cell is placable
-		Placable p = gameObject.GetComponent<Placable>();
-		if (p) {
-			p.Cell = this;
-		}
-
 		//Plane = GameObject.CreatePrimitive (PrimitiveType.Plane);
 		//Plane.transform.localScale = Vector3.one * 0.1f * SIZE;
 		//Plane.transform.Rotate (Vector3.left*90);
