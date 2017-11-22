@@ -225,7 +225,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 0
-  Map: {fileID: 11400000, guid: 379292e61dd287045991509dac237982, type: 2}
+  Map: {fileID: 11400000, guid: c4eac663b861cbc4bbd5580c2815dc3e, type: 2}
   pathfindingAlgorithm: {fileID: 11400000, guid: b4ca2f8d6abb0e54a92467996bf72d0b,
     type: 2}
 --- !u!4 &1279842659
@@ -279,20 +279,6 @@ Prefab:
     - target: {fileID: 4717164693400064, guid: b89defa53a2b25c4aa8a3de26929dd04, type: 2}
       propertyPath: m_RootOrder
       value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 114136656954757970, guid: b89defa53a2b25c4aa8a3de26929dd04,
-        type: 2}
-      propertyPath: initialPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114136656954757970, guid: b89defa53a2b25c4aa8a3de26929dd04,
-        type: 2}
-      propertyPath: initialPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1718873853375446, guid: b89defa53a2b25c4aa8a3de26929dd04, type: 2}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b89defa53a2b25c4aa8a3de26929dd04, type: 2}
