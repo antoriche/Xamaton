@@ -60,7 +60,6 @@ public class Player : Entity {
 		// number of turns = number of cases / CasePerTurn
 		int turn = (int)Math.Ceiling((double)path.Count / (double)dep.CasePerTurn);
 
-
 		int i = 0;
 		while (i != turn) {
 			// Turn in progress, player is in break
@@ -69,8 +68,10 @@ public class Player : Entity {
 			// Wait until turn completed
 			yield return new WaitUntil (() => ActionManager.Instance.Turn == false);
 			i++;
-			// Refresh Path
-			path = CurrentPath (destination);
+			if (i != turn) {
+				// Refresh Path
+				path = CurrentPath (destination);
+			}
 		}
 	}
 
