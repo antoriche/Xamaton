@@ -51,8 +51,7 @@ public class Deplacable : Placable {
 	}
 
 }
-
-
+	
 /*
 	Should extends PlacableEditor but It doesn't work
 */
