@@ -104,7 +104,8 @@ public class MeshMap : Singleton<MeshMap>{
 		player.Cell = getCellFromPosition (playerPosition);
 
 		PutCameraOverMap ();
-
+		StartCoroutine (MobsSpawner.Instance.SpawnCoroutine ());
+		this._ready = true;
 	}
 
 	/*
@@ -159,16 +160,14 @@ public class MeshMap : Singleton<MeshMap>{
 	}
 
 	/*
-	 * Is called when cell.Select change State.
+	 * Is called when cell is clicked .Select change State.
 	 */
-	private void ClickOnCell(Cell cell){
+	private void ClickOnCell(Cell cell) {
 		/*if(cell.Select)
 			makePath ();*/
 		
-		if (ActionManager.Instance.Action)
-			ActionManager.Instance.Action.ClickOnCell (cell);
-		else
-			cell.Select = false;
+		ActionManager.Instance.Player.Play(cell);
+		cell.Select = false;
 	}
 
 	//this method will test pathfinding feature

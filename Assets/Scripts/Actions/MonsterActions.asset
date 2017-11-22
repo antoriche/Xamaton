@@ -8,6 +8,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e69435ab84d464b43ab065b2e77732b1, type: 3}
-  m_Name: Movement Action
+  m_Script: {fileID: 11500000, guid: 0074169322693054494aaf33d4e6d66e, type: 3}
+  m_Name: MonsterActions
   m_EditorClassIdentifier: 
+  map:
+  - character: 77
+    action: {fileID: 11400000, guid: 5970771b9ef06e04aad1913b5a167428, type: 2}

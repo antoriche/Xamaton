@@ -93,10 +93,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40341ba8d9f7e334cb801dbb8297faa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapAI: {fileID: 11400000, guid: 23eb466b7e4f101479d08e4a154352b0, type: 2}
-  intervalMapAIMin: 10
-  intervalMapAIMax: 20
-  combatAI: {fileID: 0}
+  listActions: {fileID: 11400000, guid: 062a0b51b726384448d3f3d3240831bc, type: 2}
+  life: 100
+  attack: 5
 --- !u!114 &114874447692113402
 MonoBehaviour:
   m_ObjectHideFlags: 1
