@@ -104,7 +104,7 @@ public class MeshMap : Singleton<MeshMap>{
 		player.Cell = getCellFromPosition (playerPosition);
 
 		PutCameraOverMap ();
-		StartCoroutine (MobsSpawner.Instance.SpawnCoroutine ());
+		MobsSpawner.Instance.Init();
 		this._ready = true;
 	}
 
@@ -147,7 +147,7 @@ public class MeshMap : Singleton<MeshMap>{
 	}
 
 	public void OnDrawGizmos(){
-		Gizmos.DrawCube (new Vector3 (Map.Width/2,Map.Height/2,0),new Vector3 (Map.Width,Map.Height,1));
+		//Gizmos.DrawCube (new Vector3 (Map.Width/2,Map.Height/2,0),new Vector3 (Map.Width,Map.Height,1));
 	}
 
 	/*

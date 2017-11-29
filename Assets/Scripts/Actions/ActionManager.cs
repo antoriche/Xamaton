@@ -20,9 +20,18 @@ public class ActionManager : Singleton<ActionManager> {
 			if (_turn == true) {
 				entities.Remove (Player);
 				entities.AddLast (Player);
+			}else{
+				foreach (TurnObserver turnObserver in TurnObservers) {
+					turnObserver ();
+				}
 			}
 		}
 	}
+	//Turn Observer
+	public delegate void TurnObserver();
+	private List<TurnObserver> turnObservers_ = new List<TurnObserver>();
+	public List<TurnObserver> TurnObservers{ get{ return turnObservers_; } }
+
 
 	// Total turn in game
 	private int _totalTurn;
@@ -67,7 +76,7 @@ public class ActionManager : Singleton<ActionManager> {
 		Entity next = entities.First.Value;
 
 		// if it's the player, one turn completed
-		if (next.Equals (Player)) {
+		if (Player.Equals (next) || next == null) {
 			Turn = false;
 			TotalTurn++;
 			Debug.Log ("Tour de jeu : " + TotalTurn);
@@ -83,7 +92,7 @@ public class ActionManager : Singleton<ActionManager> {
 		entities.RemoveFirst ();
 
 		// The monsters play one to one
-		if (!next.Equals (Player)) {
+		if (!Player.Equals (next)) {
 			if (!next.Play (Player.GetComponent<Deplacable> ().Cell)) {
 				Debug.Log("Le monstre a eu la flemme de jouer.");
 			}

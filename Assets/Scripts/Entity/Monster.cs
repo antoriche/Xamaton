@@ -23,7 +23,7 @@ public class Monster : Entity {
 			return false;
 
 		List<Cell> path = dep.PathfindingAlgorithm.getPath (dep.Cell, cell);
-		if (path.Count == 0) {
+		if (path == null || path.Count == 0) {
 			return false;
 		}
 		Action.Execute (gameObject, path);

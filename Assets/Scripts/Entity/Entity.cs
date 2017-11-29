@@ -42,6 +42,8 @@ public abstract class Entity : MonoBehaviour {
 	* @return boolean
 	*/ 
 	public bool Equals(Entity n) {
+		if (n == null)
+			return false;
 		if (this.Id == n.Id)
 			return true;
 		return false;
