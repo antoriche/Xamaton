@@ -13,3 +13,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapFile: {fileID: 4900000, guid: 6d1029fc6cfafd040b9cf8a5fdf57709, type: 3}
   rules: {fileID: 11400000, guid: 6cfc0908d41786e4cb587402dd180a3c, type: 2}
+  DefaultPlayerPosition: {x: 0, y: 0}
+  teleporters:
+  - origin: {x: 6, y: 14}
+    destinationMap: {fileID: 11400000, guid: c4eac663b861cbc4bbd5580c2815dc3e, type: 2}
+    destinationPosition: {x: 6, y: 1}
+  - origin: {x: 7, y: 14}
+    destinationMap: {fileID: 11400000, guid: c4eac663b861cbc4bbd5580c2815dc3e, type: 2}
+    destinationPosition: {x: 7, y: 1}
