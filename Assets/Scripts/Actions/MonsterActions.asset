@@ -14,3 +14,5 @@ MonoBehaviour:
   map:
   - character: 77
     action: {fileID: 11400000, guid: 5970771b9ef06e04aad1913b5a167428, type: 2}
+  - character: 65
+    action: {fileID: 11400000, guid: c433ca9ca155ce7448974e033ed09619, type: 2}

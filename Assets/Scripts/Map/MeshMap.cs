@@ -44,6 +44,7 @@ public class MeshMap : Singleton<MeshMap>{
 	// Use this for initialization
 	void Start(){
 		player = Instantiate (player.gameObject, new Vector3(Map.DefaultPlayerPosition.x,Map.DefaultPlayerPosition.y,-1), Quaternion.identity).GetComponent<Deplacable> ();
+		player.name = "Player";
 		DontDestroyOnLoad (player);
 
 		Load (Map,Map.DefaultPlayerPosition);
@@ -104,8 +105,49 @@ public class MeshMap : Singleton<MeshMap>{
 		player.Cell = getCellFromPosition (playerPosition);
 
 		PutCameraOverMap ();
-		MobsSpawner.Instance.Init();
+		StartCoroutine (MobsSpawner.Instance.SpawnCoroutine ());
 		this._ready = true;
+	}
+
+	/**
+	 * Get cells in the radius
+	 * @return List of Cell
+	 */
+	public List<Cell> CellRadius(Cell startCell, int radius) {
+
+		List<Cell> results = new List<Cell> ();
+
+		// to analyse
+		List<Cell> openCells = new List<Cell>();
+		// already analyse
+		List<Cell> closedCells = new List<Cell> ();
+
+		openCells.Add (startCell);
+		// Radius
+		for (int r = 0; r < radius+1; r++) {
+			int currentCount = openCells.Count;
+			for(int i = 0; i < currentCount; i++) {
+				Cell currentCell = openCells [0];
+				closedCells.Add(currentCell);
+
+				openCells.RemoveAt (0);
+
+				// 4 direction : TOP, BOTTOM, LEFT and RIGHT
+				for (int d = 0; d < 4; d++) {
+					Cell neighbor = currentCell.NeighborAt (d);
+					// if cell don't exists or is a obstacle or already analyse
+					if (neighbor == null || closedCells.Contains (neighbor) 
+						|| neighbor.Content && neighbor.Content.GetComponent<Entity> () == null)
+						continue;
+					// if it's a entity, it's targetable
+
+					openCells.Add (currentCell.NeighborAt(d));
+				}
+			}
+		}
+		results = closedCells;
+		closedCells.Remove (startCell);
+		return results;
 	}
 
 	/*
@@ -147,7 +189,7 @@ public class MeshMap : Singleton<MeshMap>{
 	}
 
 	public void OnDrawGizmos(){
-		//Gizmos.DrawCube (new Vector3 (Map.Width/2,Map.Height/2,0),new Vector3 (Map.Width,Map.Height,1));
+		Gizmos.DrawCube (new Vector3 (Map.Width/2,Map.Height/2,0),new Vector3 (Map.Width,Map.Height,1));
 	}
 
 	/*
@@ -155,7 +197,7 @@ public class MeshMap : Singleton<MeshMap>{
 	 * Warning : the size view is based on height.
 	 */
 	private void PutCameraOverMap(){
-		Camera.main.transform.position = new Vector3 (Map.Width / 2, Map.Height / 2 + 1, -10);
+		Camera.main.transform.position = new Vector3 (Map.Width / 2, Map.Height / 2, -10);
 		Camera.main.orthographicSize = Mathf.Ceil(((float)Map.Height)/2);
 	}
 
@@ -210,12 +252,6 @@ public class MeshMap : Singleton<MeshMap>{
 		if (Physics.Raycast (ray.origin, ray.direction, out hit)) {
 			if (hit.collider) {
 				Cell cell = hit.collider.gameObject.GetComponentInParent<Cell> ();
-				if (cell && cell.Content) {
-					Entity entity = cell.Content.GetComponent<Entity> ();
-					GameObject.FindWithTag ("Target LifeBar").GetComponent<LifeBar> ().entity = entity;
-				} else {
-					GameObject.FindWithTag ("Target LifeBar").GetComponent<LifeBar> ().entity = null;
-				}
 				if (cell != mouseOver && mouseOver) {
 					mouseOver.MouseOver = false;
 					mouseOver = null;

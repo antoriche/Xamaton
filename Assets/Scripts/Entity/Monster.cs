@@ -8,26 +8,24 @@ public class Monster : Entity {
 	#region implemented abstract members of Entity
 	public override bool Play (Cell cell)
 	{
-		foreach (ActionLine line in ListActions.map) {
-			// M is the action for move
-			if (line.character == 'M'){
-				if(Action)
-					Action.Disable ();
-				Action = line.action;
-				line.action.Enable ();
-			}
-		}
-
 		Deplacable dep = gameObject.GetComponent<Deplacable> ();
 		if (!dep)
 			return false;
 
-		List<Cell> path = dep.PathfindingAlgorithm.getPath (dep.Cell, cell);
-		if (path == null || path.Count == 0) {
-			return false;
+		List<Cell> cells = new List<Cell> ();
+		cells.Add (cell);
+		if (CanAttack (cells)) {
+			return ExecuteAction (cells);
 		}
-		Action.Execute (gameObject, path);
-		return true;
+
+		cells = dep.PathfindingAlgorithm.getPath (dep.Cell, cell);
+		ChangeCurrentAction ('M');
+		return ExecuteAction (cells);
 	}
 	#endregion
+
+	private bool CanAttack(List<Cell> target) {
+		ChangeCurrentAction ('A');
+		return CanExecuteAction (target);
+	}
 }

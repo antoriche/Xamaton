@@ -88,7 +88,7 @@ public class AStar : PathfindingAlgorithm {
 			Debug.Log (open);*/
 		}
 		Debug.Log ("[Pathfinding] Path not found");
-		return null;
+		return new List<Cell>();
 	}
 
 	/**

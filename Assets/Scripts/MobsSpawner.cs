@@ -15,38 +15,12 @@ public class MobsSpawner : Singleton<MobsSpawner> {
 	public int spawnMin = 1; // Init map with 1 monster
 	public int spawnMax = 3; // Max 3 monsters via luck spawn
 
-	private List<GameObject> monsters = new List<GameObject> ();
-	private Coroutine coroutine;
 
-
-	public void Init(){
-		if (coroutine != null) {
-			StopCoroutine (coroutine);
-		}
-		ActionManager.Instance.RemoveAllMonsters ();
-		foreach(GameObject o in monsters){
-			Destroy (o);
-		}
-		monsters = new List<GameObject> ();
-		coroutine = StartCoroutine (MobsSpawner.Instance.SpawnCoroutine ());
-	}
-
-	public void DestroyMonster(Monster m){
-		if (m == null)
-			return;
-		GameObject o = m.gameObject;
-		monsters.Remove (o);
-		ActionManager.Instance.RemoveEntity (m);
-		Destroy (o);
-	}
-
-
-	private void SpawnMonster() {
+	void SpawnMonster() {
 		if (_nbrMonsters >= spawnMax)
 			return;
 		
 		GameObject obj = GameObject.Instantiate<GameObject> (mobsPrefab);
-		monsters.Add (obj);
 		int nbrCell = (MeshMap.Instance.HeightMap * MeshMap.Instance.WidthMap);
 		Cell randomCell = null;
 		// Get a valid cell 
@@ -65,7 +39,7 @@ public class MobsSpawner : Singleton<MobsSpawner> {
 		}
 	}
 
-	private IEnumerator SpawnCoroutine() {
+	public IEnumerator SpawnCoroutine() {
 		// Wait MeshMap is ready
 		yield return new WaitUntil (() => MeshMap.Instance.IsReady == true);
 		Debug.Log(MeshMap.Instance.IsReady);

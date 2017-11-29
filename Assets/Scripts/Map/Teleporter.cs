@@ -13,24 +13,19 @@ public class Teleporter : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		cell = GetComponent<Cell> ();
-		ActionManager.Instance.TurnObservers.Add(Observer);
-	}
-	void Destroy(){
-		ActionManager.Instance.TurnObservers.Remove(Observer);
 	}
 
 	public void Destination(Map map, Vector2 position){
 		this.destinationMap = map;
 		this.destinationPosition = position;
 	}
-
-	//Is called at the end of the turn
-	void Observer(){
+	
+	// Update is called once per frame
+	void Update () {
+		//TODO : Add observer to cell's content
 		if (cell.Content && cell.Content.gameObject.CompareTag ("Player")) {
-			Debug.Log ("load new map");
+			Debug.Log ("Load new map");
 			MeshMap.Instance.Load (destinationMap,destinationPosition);
 		}
 	}
-	
-
 }
