@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Monster
+  - Player LifeBar
+  - Target LifeBar
   layers:
   - Default
   - TransparentFX

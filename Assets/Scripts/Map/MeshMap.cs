@@ -155,7 +155,7 @@ public class MeshMap : Singleton<MeshMap>{
 	 * Warning : the size view is based on height.
 	 */
 	private void PutCameraOverMap(){
-		Camera.main.transform.position = new Vector3 (Map.Width / 2, Map.Height / 2, -10);
+		Camera.main.transform.position = new Vector3 (Map.Width / 2, Map.Height / 2 + 1, -10);
 		Camera.main.orthographicSize = Mathf.Ceil(((float)Map.Height)/2);
 	}
 

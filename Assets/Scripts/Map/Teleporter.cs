@@ -26,7 +26,6 @@ public class Teleporter : MonoBehaviour {
 
 	//Is called at the end of the turn
 	void Observer(){
-		Debug.Log ("Turn is finish ? "+!ActionManager.Instance.Turn);
 		if (cell.Content && cell.Content.gameObject.CompareTag ("Player")) {
 			Debug.Log ("load new map");
 			MeshMap.Instance.Load (destinationMap,destinationPosition);

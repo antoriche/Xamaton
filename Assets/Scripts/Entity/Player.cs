@@ -18,6 +18,8 @@ public class Player : Entity {
 				line.action.Enable ();
 			}
 		}
+
+		GameObject.FindWithTag ("Player LifeBar").GetComponent<LifeBar> ().entity = this;
 	}
 
 	// Update is called once per frame
