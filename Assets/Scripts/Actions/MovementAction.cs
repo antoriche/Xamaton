@@ -10,19 +10,19 @@ public class MovementAction : Action {
 	private readonly float speed = 2f;
 
 	Coroutine coroutine;
-
-	public override void Enable ()
-	{
-		base.Enable ();
-	}
   
+	#region implemented abstract members of Action
 	public override void Execute (GameObject obj, List<Cell> cells) {
 
 		Deplacable dep = obj.GetComponent<Deplacable> ();
-		if (dep) {
-			ActionManager.Instance.StartCoroutine(MoveCases(dep, cells));
+		if (dep == null || cells == null || cells.Count == 0) {
+			ActionManager.Instance.NotifyAction ();
+			Debug.Log (obj.name + " ne sait pas bouger.");
+			return;
 		}
+		ActionManager.Instance.StartCoroutine(MoveCases(dep, cells));
 	}
+	#endregion
 
 	IEnumerator MoveCases(Deplacable d, List<Cell> c) {
 		// Move in progress

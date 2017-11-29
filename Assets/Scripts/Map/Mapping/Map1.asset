@@ -17,7 +17,7 @@ MonoBehaviour:
   teleporters:
   - origin: {x: 6, y: 0}
     destinationMap: {fileID: 11400000, guid: 379292e61dd287045991509dac237982, type: 2}
-    destinationPosition: {x: 6, y: 13}
+    destinationPosition: {x: 6, y: 14}
   - origin: {x: 7, y: 0}
     destinationMap: {fileID: 11400000, guid: 379292e61dd287045991509dac237982, type: 2}
-    destinationPosition: {x: 7, y: 13}
+    destinationPosition: {x: 7, y: 14}

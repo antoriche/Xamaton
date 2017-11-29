@@ -7,56 +7,54 @@ public class Player : Entity {
 
 	private Deplacable dep;
 
-	void Start() {
-		// DefaultAction : TEST
-		foreach (ActionLine line in ListActions.map) {
-			// M is the action for move
-			if (line.character == 'M'){
-				if(Action)
-					Action.Disable ();
-				Action = line.action;
-				line.action.Enable ();
-			}
-		}
-
-		GameObject.FindWithTag ("Player LifeBar").GetComponent<LifeBar> ().entity = this;
-	}
-
 	// Update is called once per frame
 	void Update () {
 		/*
-		 * Player Action
+		 * Player Action : keyboard
 		 */
-		if (!Input.anyKeyDown)
+		if (!Input.anyKeyDown || Input.inputString.Length == 0)
 			return;
-		foreach (ActionLine line in ListActions.map) {
-			if (Input.GetKeyDown (line.character.ToString ().ToLower()) && Action != line.action){
-				if (Action)
-					Action.Disable ();
-				MeshMap.Instance.UnselectAll ();
-				Action = line.action;
-				if(Action)
-					Action.Enable ();
-			}
+		Debug.Log ("Touche pressée : " + Input.inputString);
+		char character = Input.inputString.ToUpper () [0];
+		// No change in movement action because it's automatic
+		if (character != 'M') {
+			ChangeCurrentAction (character);
 		}
 	}
 
 	#region implemented abstract members of Entity
 	public override bool Play(Cell cell) {
+		// if cell contains a monster => attack
+		if (cell.Content && cell.Content.GetComponents<Monster> () != null) {
+			
+			List<Cell> cells = new List<Cell> ();
+			cells.Add (cell);
+			// Turn in progress
+			ActionManager.Instance.Turn = true;
+			if (!ExecuteAction (cells)) {
+				ActionManager.Instance.Turn = false;
+				Debug.Log ("Aucun sort sélectionné");
+				return false;
+			}
+			return true;
+		}
 
 		dep = gameObject.GetComponent<Deplacable> ();
 		if (!dep)
 			return false;
-			
+		
 		StartCoroutine(MoveInProgress(cell));
 		return true;
 	}
 	#endregion
 
+	/**
+	 * Execute the player turns
+	 */
 	IEnumerator MoveInProgress(Cell destination) {
 
 		List<Cell> path = CurrentPath (destination);
-		if (path == null) {
+		if (path == null || path.Count == 0) {
 			yield return null;	
 		}
 		// number of turns = number of cases / CasePerTurn
@@ -64,9 +62,10 @@ public class Player : Entity {
 
 		int i = 0;
 		while (i != turn) {
-			// Turn in progress, player is in break
+			// Turn in progress
 			ActionManager.Instance.Turn = true;
-			Action.Execute (gameObject, path);
+			ChangeCurrentAction ('M');
+			ExecuteAction (path);
 			// Wait until turn completed
 			yield return new WaitUntil (() => ActionManager.Instance.Turn == false);
 			i++;
