@@ -210,6 +210,12 @@ public class MeshMap : Singleton<MeshMap>{
 		if (Physics.Raycast (ray.origin, ray.direction, out hit)) {
 			if (hit.collider) {
 				Cell cell = hit.collider.gameObject.GetComponentInParent<Cell> ();
+				if (cell && cell.Content) {
+					Entity entity = cell.Content.GetComponent<Entity> ();
+					GameObject.FindWithTag ("Target LifeBar").GetComponent<LifeBar> ().entity = entity;
+				} else {
+					GameObject.FindWithTag ("Target LifeBar").GetComponent<LifeBar> ().entity = null;
+				}
 				if (cell != mouseOver && mouseOver) {
 					mouseOver.MouseOver = false;
 					mouseOver = null;
