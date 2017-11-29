@@ -38,6 +38,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4348377441376226}
   - component: {fileID: 114905764963432312}
+  - component: {fileID: 114540173114902560}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -125,6 +126,20 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &114540173114902560
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1798011010631980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f537fc1fe5f92794494668aec0b29fd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  listActions: {fileID: 11400000, guid: 42b0a76d13448e64fabd93ee40b4fd52, type: 2}
+  life: 100
+  attack: 5
 --- !u!114 &114905764963432312
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -141,4 +156,4 @@ MonoBehaviour:
   cell_: {fileID: 0}
   pathfindingAlgorithm: {fileID: 11400000, guid: b4ca2f8d6abb0e54a92467996bf72d0b,
     type: 2}
-  PM: 10
+  casePerTurn: 1
