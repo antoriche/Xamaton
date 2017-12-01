@@ -4,12 +4,25 @@ using UnityEngine;
 
 public abstract class Action : ScriptableObject {
 
+	[SerializeField]
+	private Sprite image;
+	public Sprite Image {
+		get {
+			return image;
+		}
+	}
+
+	[SerializeField]
+	private int loadingTime;
+	public virtual int LoadingTime {
+		get {
+			return loadingTime;
+		}
+	}
+
 	public virtual void Enable (GameObject obj) {}
 
 	public abstract void Execute(GameObject obj, List<Cell> cells);
-
-	public abstract Sprite Image{ get; }
-	public abstract int LoadingTime{ get; }
 
 	public virtual void Disable () {}
 

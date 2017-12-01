@@ -11,26 +11,6 @@ public class MovementAction : Action {
 
 	Coroutine coroutine;
 
-	[SerializeField]
-	private Sprite image;
-	public override Sprite Image {
-		get {
-			return image;
-		}
-	}
-
-	[SerializeField]
-	private int loadingTime;
-	public override int LoadingTime {
-		get {
-			return loadingTime;
-		}
-	}
-
-	public override void Enable ()
-	{
-		base.Enable ();
-	}
   
 	#region implemented abstract members of Action
 	public override void Execute (GameObject obj, List<Cell> cells) {

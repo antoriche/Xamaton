@@ -16,7 +16,11 @@ public abstract class Entity : MonoBehaviour {
 		get { return listActions; }
 	}
 	[SerializeField]
+	int maxLife = 100;
+	public int MaxLife{ get { return maxLife; } }
+	[SerializeField]
 	int life = 100;
+	public int Life{ get { return life; } }
 	[SerializeField]
 	int attack = 5;
 	public int Attack {
@@ -59,7 +63,8 @@ public abstract class Entity : MonoBehaviour {
 			return false;
 		}
 		currentAction = changeAction;
-		currentAction.Enable (gameObject);
+		if(currentAction != null)
+			currentAction.Enable (gameObject);
 		return true;
 	}
 
