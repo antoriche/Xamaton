@@ -10,6 +10,9 @@ public abstract class Action : ScriptableObject {
 
 	public abstract void Execute(GameObject obj, List<Cell> cells);
 
+	public abstract Sprite Image{ get; }
+	public abstract int LoadingTime{ get; }
+
 	public virtual void Disable (){
 	
 	}

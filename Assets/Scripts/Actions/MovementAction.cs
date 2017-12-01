@@ -11,16 +11,34 @@ public class MovementAction : Action {
 
 	Coroutine coroutine;
 
+	[SerializeField]
+	private Sprite image;
+	public override Sprite Image {
+		get {
+			return image;
+		}
+	}
+
+	[SerializeField]
+	private int loadingTime;
+	public override int LoadingTime {
+		get {
+			return loadingTime;
+		}
+	}
+
 	public override void Enable ()
 	{
 		base.Enable ();
 	}
   
 	public override void Execute (GameObject obj, List<Cell> cells) {
-
+		if (coroutine != null) {
+			ActionManager.Instance.StopCoroutine (coroutine);
+		}
 		Deplacable dep = obj.GetComponent<Deplacable> ();
 		if (dep) {
-			ActionManager.Instance.StartCoroutine(MoveCases(dep, cells));
+			coroutine = ActionManager.Instance.StartCoroutine(MoveCases(dep, cells));
 		}
 	}
 

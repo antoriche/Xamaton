@@ -212,7 +212,11 @@ public class MeshMap : Singleton<MeshMap>{
 				Cell cell = hit.collider.gameObject.GetComponentInParent<Cell> ();
 				if (cell && cell.Content) {
 					Entity entity = cell.Content.GetComponent<Entity> ();
-					GameObject.FindWithTag ("Target LifeBar").GetComponent<LifeBar> ().entity = entity;
+					if (entity as Player == null) {
+						GameObject.FindWithTag ("Target LifeBar").GetComponent<LifeBar> ().entity = entity;
+					} else {
+						GameObject.FindWithTag ("Target LifeBar").GetComponent<LifeBar> ().entity = null;
+					}
 				} else {
 					GameObject.FindWithTag ("Target LifeBar").GetComponent<LifeBar> ().entity = null;
 				}

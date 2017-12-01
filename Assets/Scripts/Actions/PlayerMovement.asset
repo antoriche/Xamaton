@@ -11,4 +11,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e69435ab84d464b43ab065b2e77732b1, type: 3}
   m_Name: PlayerMovement
   m_EditorClassIdentifier: 
-  speed: 1
+  image: {fileID: 21300000, guid: d915577ab34c3d247b3abd0d32393a4e, type: 3}
+  loadingTime: 0
