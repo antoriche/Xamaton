@@ -32,15 +32,21 @@ public class MovementAction : Action {
 		base.Enable ();
 	}
   
+	#region implemented abstract members of Action
 	public override void Execute (GameObject obj, List<Cell> cells) {
 		if (coroutine != null) {
 			ActionManager.Instance.StopCoroutine (coroutine);
 		}
 		Deplacable dep = obj.GetComponent<Deplacable> ();
-		if (dep) {
-			coroutine = ActionManager.Instance.StartCoroutine(MoveCases(dep, cells));
+
+		if (dep == null || cells == null || cells.Count == 0) {
+			ActionManager.Instance.NotifyAction ();
+			Debug.Log (obj.name + " ne sait pas bouger.");
+			return;
 		}
+		ActionManager.Instance.StartCoroutine(MoveCases(dep, cells));
 	}
+	#endregion
 
 	IEnumerator MoveCases(Deplacable d, List<Cell> c) {
 		// Move in progress
