@@ -7,6 +7,10 @@ public class Player : Entity {
 
 	private Deplacable dep;
 
+	void Start(){
+		GameObject.FindWithTag ("Player LifeBar").GetComponent<LifeBar> ().entity = this;
+	}
+
 	// Update is called once per frame
 	void Update () {
 		/*
