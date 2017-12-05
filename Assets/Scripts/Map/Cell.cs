@@ -19,15 +19,11 @@ public class Cell : MonoBehaviour{
 			return content;
 		}
 		set{
-			Placable old = content;
 			content = value;
 
 			if (content && !this.Equals(content.Cell)) {
 				content.Cell = this;
 			}
-			/*if(old && old.Cell != null)
-				old.Cell = null;*/
-			//Matrice.Version++;
 			RefreshRender ();
 		}
 	}
@@ -63,7 +59,7 @@ public class Cell : MonoBehaviour{
 
 	void Awake(){
 		defaultColor = gameObject.GetComponentInChildren<Renderer> ().material.color;
-		defaultTexture = gameObject.GetComponentInChildren<Renderer> ().material.mainTexture;
+		//defaultTexture = gameObject.GetComponentInChildren<Renderer> ().material.mainTexture;
 	}
 
 	public bool BindOn(Cell cell, int at){
@@ -107,7 +103,7 @@ public class Cell : MonoBehaviour{
 
 
 	private Color defaultColor;
-	private Texture defaultTexture;
+	//private Texture defaultTexture;
 	private void RefreshRender(){
 		Renderer renderer = gameObject.GetComponentInChildren<Renderer> ();
 		if (renderer){
