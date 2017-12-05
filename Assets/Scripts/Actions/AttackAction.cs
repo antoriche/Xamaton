@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class AttackAction : Action
 {
 	[SerializeField]
-	string name = "Default Spell";
+	string attackName = "Default Spell";
 	[SerializeField]
 	int damageMin = 5;
 	[SerializeField]
@@ -60,7 +60,7 @@ public class AttackAction : Action
 			// Take Damage !
 			int totalDamage = Random.Range (damageMin, damageMax) * entityAttack.Attack;
 			entityTargeted.TakeDamage (totalDamage);
-			Debug.Log (obj.name + " attaque " + entityTargeted.name + " avec " + name + " pour " + totalDamage + " de dégats !");
+			Debug.Log (obj.name + " attaque " + entityTargeted.name + " avec " + attackName + " pour " + totalDamage + " de dégats !");
 		} else {
 			Debug.Log (obj.name + " n'a pas la portée pour attaquer.");
 		}

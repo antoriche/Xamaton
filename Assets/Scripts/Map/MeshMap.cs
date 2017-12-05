@@ -78,7 +78,7 @@ public class MeshMap : Singleton<MeshMap>{
 			}
 		}
 		foreach (Cell c in cells.Values) {
-			Cell[] neighbors = new Cell[4];
+			//Cell[] neighbors = new Cell[4];
 			//neighbors [Cell.LEFT] = (x==0)?null:cells[i-1];
 			//neighbors [Cell.TOP] = getCellFromPosition (new Vector2(x,y-1));
 			c.BindOn (getCellFromId(c.Id+Map.Width),Cell.TOP);

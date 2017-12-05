@@ -17,7 +17,7 @@ public class LifeBar : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		size = this.GetComponent<RectTransform> ().localScale;
-		Transform t = transform.FindChild ("ProgressBar");
+		Transform t = transform.Find ("ProgressBar");
 		if (!t) {
 			Debug.LogError ("LifeBar must have a child named ProgressBar");
 			return;
