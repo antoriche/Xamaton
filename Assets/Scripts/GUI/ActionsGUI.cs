@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class ActionsGUI : MonoBehaviour {
 
-	public ActionMapper actions;
 	public RectTransform actionGUIPrefab;
 
 	private List<ActionGUI> list = new List<ActionGUI>();
@@ -15,6 +14,7 @@ public class ActionsGUI : MonoBehaviour {
 	void Start(){
 		player = GameObject.FindWithTag ("Player").GetComponent<Player> ();
 		int i = 1;
+		ActionMapper actions = player.ListActions;
 		foreach (ActionLine actionline in actions.map) {
 			Action action = actionline.action;
 			RectTransform o = Instantiate (actionGUIPrefab,new Vector2(32,32*(i*2)-32),Quaternion.identity);
