@@ -6,9 +6,9 @@ using System;
 [CreateAssetMenu(menuName="Mapping/Map")]
 public class Map : ScriptableObject {
 	
+	public Vector2 DefaultPlayerPosition;
 	public TextAsset mapFile;
 	public MapRules rules;
-	public Vector2 DefaultPlayerPosition;
 	public List<TeleporterLine> teleporters;
 
 	private string[] txtMap;
@@ -59,6 +59,22 @@ public class Map : ScriptableObject {
 			Debug.LogWarning ("Cell not found during map loading ! Default cell will be used");
 			return rules.DefaultCell;
 		}
+	}
+
+	public override bool Equals(System.Object obj)
+	{
+	 if (obj == null)
+	     return false;
+	 Map m = obj as Map ;
+	 if ((System.Object)m == null)
+	     return false;
+		return mapFile.text.Equals( m.mapFile.text );
+	}
+	public bool Equals(Map m)
+	{
+	 if ((object)m == null)
+	     return false;
+		return mapFile.text.Equals( m.mapFile.text );
 	}
 }
 
