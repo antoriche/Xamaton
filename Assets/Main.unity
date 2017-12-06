@@ -644,6 +644,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c2d2b468e6e29f4285b0a33beb36955, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actions: {fileID: 11400000, guid: 42b0a76d13448e64fabd93ee40b4fd52, type: 2}
   actionGUIPrefab: {fileID: 224076845758840782, guid: bfde32decfda3774d91dba2aef88ea4f,
     type: 2}
 --- !u!114 &1295234217
@@ -726,7 +727,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.35549176, g: 0.017030725, b: 0.77205884, a: 1}
+  m_Color: {r: 0, g: 0.006896496, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
