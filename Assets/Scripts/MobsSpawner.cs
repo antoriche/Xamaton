@@ -78,6 +78,6 @@ public class MobsSpawner : Singleton<MobsSpawner> {
 
 		private Monster _monster;
 		// Monster's position on the map
-		private Vector3 _position = null;
+		private Vector3 _position = Vector3.zero;
 	}
 }
