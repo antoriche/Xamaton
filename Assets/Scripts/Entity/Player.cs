@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
 
 public class Player : Entity {
 
@@ -86,8 +87,7 @@ public class Player : Entity {
 
 	public override void Die ()
 	{
-		Debug.LogWarning ("Application.Quit");
-		Application.Quit ();
+		SceneManager.LoadScene ("GameOver");
 	}
 
 }
