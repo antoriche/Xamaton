@@ -30,16 +30,23 @@ public abstract class Entity : MonoBehaviour {
 	// Current action
 	private Action currentAction;
 
-	void OnEnable() {
+	void Awake() {
 		ENTITY_ID++;
 		this.Id = ENTITY_ID;
-
 		// load actions
 		foreach (ActionLine line in ListActions.map) {
 			actions.Add (line.character, line.action);
 		}
+	}
+
+	void OnEnable() {
 		// Add in the game
 		ActionManager.Instance.AddEntity (this);
+	}
+
+	void OnDisable() {
+		// Remove in the game
+		ActionManager.Instance.RemoveEntity (this);
 	}
 
 	public abstract bool Play (Cell cell);
@@ -49,7 +56,7 @@ public abstract class Entity : MonoBehaviour {
 	 * @return bool
 	 */
 	public bool ChangeCurrentAction(char action) {
-		if (!actions.ContainsKey (action))
+		if (!actions.ContainsKey (action))	
 			return false;
 		
 		if(currentAction)

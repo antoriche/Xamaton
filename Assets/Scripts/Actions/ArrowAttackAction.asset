@@ -11,7 +11,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faa8f8d01c42fde409996e01b2967d8f, type: 3}
   m_Name: ArrowAttackAction
   m_EditorClassIdentifier: 
-  name: Arrow
+  image: {fileID: 21300000, guid: 358bc678d85cde448bbe5affb660336d, type: 3}
+  loadingTime: 0
+  attackName: Arrow
   damageMin: 2
   damageMax: 4
   po: 3

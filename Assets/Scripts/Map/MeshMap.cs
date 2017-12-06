@@ -7,6 +7,9 @@ public class MeshMap : Singleton<MeshMap>{
 
 	[SerializeField]
 	Map Map;
+	public Map CurrentMap {
+		get { return Map; }
+	}
 
 	[SerializeField]
 	PathfindingAlgorithm pathfindingAlgorithm;
@@ -14,6 +17,16 @@ public class MeshMap : Singleton<MeshMap>{
 	[SerializeField]
 	Deplacable player;
 
+	/*
+	 * Number of the current floor, this number corresponds to 
+	 * the player's score and also to the difficulty of spawn of monsters.
+	 */
+	[SerializeField]
+	int numFloor = 0;
+	public int NumFloor {
+		get { return numFloor;}
+	}
+		
 	private Dictionary<Int32, Cell> cells;
 	private Cell mouseOver;
 
@@ -54,13 +67,14 @@ public class MeshMap : Singleton<MeshMap>{
 
 		Load (Map,Map.DefaultPlayerPosition,true);
 
-		this._ready = true;
 	}
 
 	void Unload(){
+		this._ready = false;
 		Version++;
 		if (cells == null)
 			return;
+		MobsSpawner.Instance.UnloadMap (this.Map);
 		foreach (Cell cell in cells.Values) {
 			//Destroy (cell.Content.gameObject);
 			Destroy (cell.gameObject);
@@ -90,6 +104,9 @@ public class MeshMap : Singleton<MeshMap>{
 		Debug.Log ("Load new : "+newLevel);
 		if (newLevel) {
 			placeStairs ();
+			// new floor
+			numFloor++;
+			MobsSpawner.Instance.LoadFloor ();
 		}
 		Debug.Log ("stair "+Map+" "+stairPosition);
 		this.Map = map;
@@ -106,6 +123,8 @@ public class MeshMap : Singleton<MeshMap>{
 				cell.init (i, null);
 				cells.Add (cell.Id,cell);
 				cell.transform.parent = gameObject.transform;
+				// Rotation for texture
+				cell.transform.rotation = Quaternion.Euler (0, 0, 180);
 				i++;
 			}
 		}
@@ -137,8 +156,8 @@ public class MeshMap : Singleton<MeshMap>{
 		player.Cell = getCellFromPosition (playerPosition);
 
 		PutCameraOverMap ();
-		StartCoroutine (MobsSpawner.Instance.SpawnCoroutine ());
 		this._ready = true;
+		MobsSpawner.Instance.LoadMap (map);
 	}
 
 	/**

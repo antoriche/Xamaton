@@ -7,7 +7,7 @@ using System;
 public class MovementAction : Action {
 
 	// Speed animation movement
-	private readonly float speed = 2f;
+	private readonly float speed = 3f;
 
 	private IEnumerator isRunning;
   
