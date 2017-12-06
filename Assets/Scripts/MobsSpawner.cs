@@ -91,7 +91,7 @@ public class MobsSpawner : Singleton<MobsSpawner> {
 
 		Debug.Log ("Add Monster on map : " + numMap);
 
-		// if map active => spawn monster 
+		// if map active => spawn monster
 		if (MeshMap.Instance.IsReady && MeshMap.Instance.CurrentMap.Equals (map)) {
 			SpawnMonster (monster);
 		}
@@ -99,18 +99,18 @@ public class MobsSpawner : Singleton<MobsSpawner> {
 
 	/*
 	 * Spawn a monster on the current map
-	 */ 
+	 */
 	private void SpawnMonster(Monster monster) {
 
 		GameObject obj = monster.gameObject;
 
 		// if whithout position
 		if (obj.transform.position.Equals (Vector3.zero)) {
-			
+
 			int nbrCell = (MeshMap.Instance.HeightMap * MeshMap.Instance.WidthMap);
 			Cell randomCell;
-			// Get a valid cell 
-			do {		
+			// Get a valid cell
+			do {
 				randomCell = MeshMap.Instance.getCellFromId (Random.Range (0, nbrCell));
 			}while(randomCell.Content);
 			Debug.Log (randomCell + " : " + randomCell.Content);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
 
 public class Player : Entity {
 
@@ -83,4 +84,10 @@ public class Player : Entity {
 	List<Cell> CurrentPath(Cell destination) {
 		return dep.PathfindingAlgorithm.getPath (dep.Cell, destination);
 	}
+
+	public override void Die ()
+	{
+		SceneManager.LoadScene ("GameOver");
+	}
+
 }

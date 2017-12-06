@@ -106,9 +106,11 @@ public abstract class Entity : MonoBehaviour {
 		this.life -= damage;
 		if (this.life <= 0) {
 			ActionManager.Instance.RemoveEntity (this);
-			Destroy (gameObject);
+			Die ();
 		}
 	}
+
+	public abstract void Die();
 
 	/**
 	* Check if this entity is equals parameter
