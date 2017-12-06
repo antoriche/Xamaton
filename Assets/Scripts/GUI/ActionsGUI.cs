@@ -18,7 +18,7 @@ public class ActionsGUI : MonoBehaviour {
 		foreach (ActionLine actionline in actions.map) {
 			Action action = actionline.action;
 			RectTransform o = Instantiate (actionGUIPrefab,new Vector2(32,32*(i*2)-32),Quaternion.identity);
-			o.transform.parent = this.transform;
+			o.transform.SetParent(this.transform);
 			o.GetComponentInChildren<Image>().sprite = action.Image;
 			o.Find("Key Panel").GetComponentInChildren<Text>().text = actionline.character.ToString();
 			list.Add ( new ActionGUI{GUI = o , Action = action} );

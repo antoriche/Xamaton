@@ -7,6 +7,9 @@ public class MeshMap : Singleton<MeshMap>{
 
 	[SerializeField]
 	Map Map;
+	public Map CurrentMap {
+		get { return Map; }
+	}
 
 	[SerializeField]
 	PathfindingAlgorithm pathfindingAlgorithm;
@@ -23,7 +26,7 @@ public class MeshMap : Singleton<MeshMap>{
 	public int NumFloor {
 		get { return numFloor;}
 	}
-
+		
 	private Dictionary<Int32, Cell> cells;
 	private Cell mouseOver;
 
@@ -64,13 +67,14 @@ public class MeshMap : Singleton<MeshMap>{
 
 		Load (Map,Map.DefaultPlayerPosition,true);
 
-		this._ready = true;
 	}
 
 	void Unload(){
+		this._ready = false;
 		Version++;
 		if (cells == null)
 			return;
+		MobsSpawner.Instance.UnloadMap (this.Map);
 		foreach (Cell cell in cells.Values) {
 			//Destroy (cell.Content.gameObject);
 			Destroy (cell.gameObject);
@@ -98,6 +102,9 @@ public class MeshMap : Singleton<MeshMap>{
 		Debug.Log ("Load new : "+newLevel);
 		if (newLevel) {
 			placeStairs ();
+			// new floor
+			numFloor++;
+			MobsSpawner.Instance.LoadFloor ();
 		}
 		Debug.Log ("stair "+Map+" "+stairPosition);
 		this.Map = map;
@@ -147,8 +154,8 @@ public class MeshMap : Singleton<MeshMap>{
 		player.Cell = getCellFromPosition (playerPosition);
 
 		PutCameraOverMap ();
-		MobsSpawner.Instance.Initialization ();
 		this._ready = true;
+		MobsSpawner.Instance.LoadMap (map);
 	}
 
 	/**

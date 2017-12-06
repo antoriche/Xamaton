@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class Monster : Entity {
 
+
+	public Monster() {
+		
+	}
+
 	// AI of monster
 	#region implemented abstract members of Entity
 	public override bool Play (Cell cell)
