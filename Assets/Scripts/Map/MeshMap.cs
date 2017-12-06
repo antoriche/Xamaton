@@ -65,6 +65,7 @@ public class MeshMap : Singleton<MeshMap>{
 			//Destroy (cell.Content.gameObject);
 			Destroy (cell.gameObject);
 		}
+		MobsSpawner.Instance.UnloadMap ();
 	}
 
 	public void placeStairs(){
@@ -77,8 +78,9 @@ public class MeshMap : Singleton<MeshMap>{
 			vector = new Vector2 (UnityEngine.Random.Range (0,stairMap.Width),UnityEngine.Random.Range (0, stairMap.Height));
 			cell = stairMap.getCell ((int)vector.x, (int)vector.y);
 			Debug.Log ("Trying : "+cell.name);
-			if (cell.Content != null)
+			if (cell.Content != null) {
 				cell = null;
+			}
 		}
 		stairPosition = vector;
 	}
@@ -227,7 +229,7 @@ public class MeshMap : Singleton<MeshMap>{
 	 * Warning : the size view is based on height.
 	 */
 	private void PutCameraOverMap(){
-		Camera.main.transform.position = new Vector3 (Map.Width / 2, Map.Height / 2, -10);
+		Camera.main.transform.position = new Vector3 (Map.Width / 2, Map.Height / 2 + 1, -10);
 		Camera.main.orthographicSize = Mathf.Ceil(((float)Map.Height)/2);
 	}
 

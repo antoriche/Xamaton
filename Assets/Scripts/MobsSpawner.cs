@@ -11,9 +11,22 @@ public class MobsSpawner : Singleton<MobsSpawner> {
 
 	public GameObject mobsPrefab;
 
+	//Dictionnary<Map,List<Monster>> _monsters;
+
 	// Spawn minimum and maximum monsters on the map
 	public int spawnMin = 1; // Init map with 1 monster
 	public int spawnMax = 3; // Max 3 monsters via luck spawn
+
+	public void MobDie(Monster m){
+		Destroy (m.gameObject);
+		//TODO : retirer du dictionnaire
+	}
+
+	public void UnloadMap(){
+		foreach (Monster m in new List<Monster>() ) {
+			m.gameObject.SetActive (false);
+		}
+	}
 
 
 	void SpawnMonster() {

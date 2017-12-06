@@ -83,4 +83,11 @@ public class Player : Entity {
 	List<Cell> CurrentPath(Cell destination) {
 		return dep.PathfindingAlgorithm.getPath (dep.Cell, destination);
 	}
+
+	public override void Die ()
+	{
+		Debug.LogWarning ("Application.Quit");
+		Application.Quit ();
+	}
+
 }

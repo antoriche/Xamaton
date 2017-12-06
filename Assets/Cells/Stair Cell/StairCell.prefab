@@ -150,3 +150,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   newLevel: 1
+  destinationMap: {fileID: 11400000, guid: c4eac663b861cbc4bbd5580c2815dc3e, type: 2}
+  destinationPosition: {x: 6, y: 4}

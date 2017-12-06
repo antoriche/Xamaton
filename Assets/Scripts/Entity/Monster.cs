@@ -28,4 +28,9 @@ public class Monster : Entity {
 		ChangeCurrentAction ('A');
 		return CanExecuteAction (target);
 	}
+
+	public override void Die ()
+	{
+		MobsSpawner.Instance.MobDie (this);
+	}
 }
