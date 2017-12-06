@@ -5,14 +5,20 @@ using UnityEngine;
 [RequireComponent(typeof(Cell))]
 public class Teleporter : MonoBehaviour {
 
+	public bool newLevel = false;
+
 	Cell cell;
 
-	Map destinationMap;
-	Vector2 destinationPosition;
+	public Map destinationMap;
+	public Vector2 destinationPosition;
 
 	// Use this for initialization
 	void Start () {
 		cell = GetComponent<Cell> ();
+	}
+
+	public Cell getCell(){
+		return cell;
 	}
 
 	public void Destination(Map map, Vector2 position){
@@ -25,7 +31,7 @@ public class Teleporter : MonoBehaviour {
 		//TODO : Add observer to cell's content
 		if (cell.Content && cell.Content.gameObject.CompareTag ("Player")) {
 			Debug.Log ("Load new map");
-			MeshMap.Instance.Load (destinationMap,destinationPosition);
+			MeshMap.Instance.Load (destinationMap,destinationPosition,newLevel);
 		}
 	}
 }

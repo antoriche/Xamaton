@@ -27,6 +27,11 @@ public class MeshMap : Singleton<MeshMap>{
 	private Dictionary<Int32, Cell> cells;
 	private Cell mouseOver;
 
+	public List<Map> maps = new List<Map>();
+	private Map stairMap;
+	private Vector2 stairPosition;
+	public Teleporter stairCell;
+
 	/*
 	 * Height and Width of map
 	 */
@@ -57,7 +62,7 @@ public class MeshMap : Singleton<MeshMap>{
 		player.name = "Player";
 		DontDestroyOnLoad (player);
 
-		Load (Map,Map.DefaultPlayerPosition);
+		Load (Map,Map.DefaultPlayerPosition,true);
 
 		this._ready = true;
 	}
@@ -72,15 +77,40 @@ public class MeshMap : Singleton<MeshMap>{
 		}
 	}
 
-	public void Load (Map map, Vector2 playerPosition) {
+	public void placeStairs(){
+		int random = UnityEngine.Random.Range (0, maps.Count);
+		Map randomMap = maps.ToArray()[random];
+		stairMap = randomMap;
+		Vector2 vector = Vector2.zero;
+		Cell cell = null;
+		while (cell == null) {
+			vector = new Vector2 (UnityEngine.Random.Range (0,stairMap.Width),UnityEngine.Random.Range (0, stairMap.Height));
+			cell = stairMap.getCell ((int)vector.x, (int)vector.y);
+			Debug.Log ("Trying : "+cell.name);
+			if (cell.Content != null)
+				cell = null;
+		}
+		stairPosition = vector;
+	}
+
+	public void Load (Map map, Vector2 playerPosition, bool newLevel = false) {
 		Unload ();
+		Debug.Log ("Load new : "+newLevel);
+		if (newLevel) {
+			placeStairs ();
+		}
+		Debug.Log ("stair "+Map+" "+stairPosition);
 		this.Map = map;
 		cells = new Dictionary<Int32,Cell> ();
 
 		int i = 0;
 		for (int x = 0; x < Map.Width; x++) {
 			for (int y = 0; y < Map.Height; y++) {
-				Cell cell = Instantiate (Map.getCell (x, y), getPositionFromCell (i) + new Vector2 (0.5f, 0.5f), Quaternion.identity).GetComponent<Cell> ();
+				Cell cell = Map.getCell (x, y);
+				if (Map.Equals (stairMap) && stairPosition == new Vector2(x,y)) {
+					cell = stairCell.gameObject.GetComponent<Cell>();
+				}
+				cell = Instantiate (cell, getPositionFromCell (i) + new Vector2 (0.5f, 0.5f), Quaternion.identity).GetComponent<Cell> ();
 				cell.init (i, null);
 				cells.Add (cell.Id,cell);
 				cell.transform.parent = gameObject.transform;
