@@ -5,25 +5,28 @@ using UnityEngine;
 [RequireComponent(typeof(Cell))]
 public class Teleporter : MonoBehaviour {
 
-	public bool newLevel = false;
+	[SerializeField]
+	bool newLevel = false;
 
 	Cell cell;
 
-	public Map destinationMap;
-	public Vector2 destinationPosition;
+	[SerializeField]
+	int[] destinationMap;
+	[SerializeField]
+	Vector2 destinationPosition;
 
 	// Use this for initialization
 	void Start () {
 		cell = GetComponent<Cell> ();
 	}
 
-	public Cell getCell(){
-		return cell;
+	public void Destination (int[] destinationMap, Vector2 destinationPosition) {
+		this.destinationMap = destinationMap;
+		this.destinationPosition = destinationPosition;
 	}
 
-	public void Destination(Map map, Vector2 position){
-		this.destinationMap = map;
-		this.destinationPosition = position;
+	public Cell getCell(){
+		return cell;
 	}
 	
 	// Update is called once per frame
@@ -31,7 +34,7 @@ public class Teleporter : MonoBehaviour {
 		//TODO : Add observer to cell's content
 		if (cell.Content && cell.Content.gameObject.CompareTag ("Player")) {
 			Debug.Log ("Load new map");
-			MeshMap.Instance.Load (destinationMap,destinationPosition,newLevel);
+			FloorManager.Instance.LoadMap (destinationMap,destinationPosition,newLevel);
 		}
 	}
 }

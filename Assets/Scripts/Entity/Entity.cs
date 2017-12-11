@@ -29,6 +29,10 @@ public abstract class Entity : MonoBehaviour {
 
 	// Current action
 	private Action currentAction;
+	public Action CurrentAction {
+		// Get, but not set
+		get { return currentAction; }
+	}
 
 	void Awake() {
 		ENTITY_ID++;
@@ -105,7 +109,6 @@ public abstract class Entity : MonoBehaviour {
 	public void TakeDamage(int damage) {
 		this.life -= damage;
 		if (this.life <= 0) {
-			ActionManager.Instance.RemoveEntity (this);
 			Die ();
 		}
 	}

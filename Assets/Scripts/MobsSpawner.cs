@@ -72,8 +72,8 @@ public class MobsSpawner : Singleton<MobsSpawner> {
 	 */
 	private void AddMonster() {
 		// Choose a random map to spawn a mob
-		int numMap = Random.Range(0, MeshMap.Instance.maps.Count);
-		Map map = MeshMap.Instance.maps[numMap];
+		int numMap = Random.Range(0, FloorManager.Instance.Maps.Count);
+		Map map = FloorManager.Instance.Maps[numMap];
 
 		if (!this._monsters.ContainsKey (map)) {
 			this._monsters.Add(map, new List<Monster>());
@@ -98,6 +98,24 @@ public class MobsSpawner : Singleton<MobsSpawner> {
 	}
 
 	/*
+	 * Remove the monster from the game
+	 */
+	public void RemoveMonster(Monster monster) {
+		DespawnMonster (monster);
+		// If the map does not contain any monsters
+		if (!this._monsters.ContainsKey (MeshMap.Instance.CurrentMap)) {
+			return;
+		}
+		List<Monster> mobs = this._monsters [MeshMap.Instance.CurrentMap];
+		if (mobs.Contains (monster)) {
+			mobs.Remove (monster);
+			// Update map
+			this._monsters.Remove (MeshMap.Instance.CurrentMap);
+			this._monsters.Add (MeshMap.Instance.CurrentMap, mobs);
+		}
+	}
+
+	/*
 	 * Spawn a monster on the current map
 	 */
 	private void SpawnMonster(Monster monster) {
@@ -113,11 +131,9 @@ public class MobsSpawner : Singleton<MobsSpawner> {
 			do {
 				randomCell = MeshMap.Instance.getCellFromId (Random.Range (0, nbrCell));
 			}while(randomCell.Content);
-			Debug.Log (randomCell + " : " + randomCell.Content);
 
 			// Spawn
 			Vector2? randomPosition = MeshMap.Instance.getPositionFromCell (randomCell);
-			Debug.Log (randomPosition);
 
 			if (randomPosition.HasValue) {
 				Debug.Log ("Spawn monster : " + randomPosition);
@@ -137,7 +153,7 @@ public class MobsSpawner : Singleton<MobsSpawner> {
 	/*
 	 * Despawn a monster on the current map
 	 */
-	private void DespawnMonster(Monster monster) {
+	public void DespawnMonster(Monster monster) {
 		monster.gameObject.SetActive (false);
 	}
 

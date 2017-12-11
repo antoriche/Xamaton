@@ -3,57 +3,48 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-[CreateAssetMenu(menuName="Mapping/Map")]
-public class Map : ScriptableObject {
+public class Map {
+
+	private static int MAP_ID = 0;
 	
-	public Vector2 DefaultPlayerPosition;
-	public TextAsset mapFile;
-	public MapRules rules;
-	public List<TeleporterLine> teleporters;
-
-	private string[] txtMap;
-
-	void OnEnable(){
-		if (mapFile == null) {
-			Debug.LogError ("mapFile cannot be null");
-		}
-		//Debug.Log (mapFile.text);
-		txtMap = mapFile.text.Split (new char[]{'\n'});
-		height_ = txtMap.Length;
-		width_ = txtMap [0].Length-1;
-		if (rules.DefaultCell == null) {
-			Debug.LogWarning ("Default Cell is Null");
-		}
-		if (width_ != Height) {
-			Debug.LogError ("Currently, Map must be a square (whidth,height) => ("+Width+","+Height+")");
-		}
-		/*foreach (string line in txtMap) {
-			string l=line.Replace(System.Environment.NewLine,"").Replace(((char)13).ToString(),"");
-			if ((l.ToCharArray().Length)-1 > width_) {
-				width_ = (l.ToCharArray().Length)-1;
-			}
-		}*/
+	private List<TeleporterLine> _teleporters;
+	public List<TeleporterLine> Teleporters {
+		get { return _teleporters; }
 	}
 
-	private int width_;
+	private string[] _txtMap;
+	private int _mapID;
+	public int MapID {
+		get { return this._mapID; }
+	}
+
+	public Map(int width, int height, string[] txtMap, List<TeleporterLine> teleporters) {
+		MAP_ID++;
+		this._mapID = MAP_ID;
+		this._width = width;
+		this._height = height;
+		this._teleporters = teleporters;
+		this._txtMap = txtMap;
+	}
+
+	private int _width;
 	public int Width{
 		get{ 
-			return width_;
+			return _width;
 		}
 	}
 
-	private int height_;
+	private int _height;
 	public int Height{
 		get{ 
-			return height_;
+			return _height;
 		}
 	}
 
-	public Cell getCell(int x, int y){
+	public Cell getCell(MapRules rules, int x, int y){
 		try{
-			//Debug.Log("Map : [height,width] = ["+Height+","+Width+"] | [x,y] = ["+x+","+y+"] => ");
-			//Debug.Log(txtMap [Width-x-1].ToCharArray () [y]);
-			Cell ret = rules.getCell(txtMap [Width-x-1].ToCharArray () [y]);
+			//Debug.Log(x + ":" + y + " = " + _txtMap [x][Height-y-1]);
+			Cell ret = rules.getCell(_txtMap [Height-y-1][x]);
 			return ret ? ret : rules.DefaultCell;
 		}catch(Exception){
 			Debug.LogWarning ("Cell not found during map loading ! Default cell will be used");
@@ -63,24 +54,45 @@ public class Map : ScriptableObject {
 
 	public override bool Equals(System.Object obj)
 	{
-	 if (obj == null)
-	     return false;
-	 Map m = obj as Map ;
-	 if ((System.Object)m == null)
-	     return false;
-		return mapFile.text.Equals( m.mapFile.text );
+		if (obj == null)
+			return false;
+		Map m = obj as Map ;
+		return this.Equals (m);
 	}
+
 	public bool Equals(Map m)
 	{
-	 if ((object)m == null)
-	     return false;
-		return mapFile.text.Equals( m.mapFile.text );
+		if (m == null)
+		     return false;
+		return this.GetHashCode() == m.GetHashCode();
+	}
+
+	public override int GetHashCode() {
+		return this._mapID;
+	}
+
+	public override string ToString() {
+		string result = "";
+		for (int y = 0; y < this._height; y++) {
+			string line = "";
+			for (int x = 0; x < this._width; x++) {
+				line += _txtMap [y] [x];
+			}
+			result += line +"\n";
+		}
+		return result;
+	}
+
+	public class TeleporterLine{
+		public Vector2 origin;
+		public int[] destinationMap;
+		public Vector2 destinationPosition;
+
+		public TeleporterLine(Vector2 origin, int[] destinationMap, Vector2 destinationPosition) {
+			this.origin = origin;
+			this.destinationMap = destinationMap;
+			this.destinationPosition = destinationPosition;
+		}
 	}
 }
-
-[Serializable]
-public class TeleporterLine{
-	public Vector2 origin;
-	public Map destinationMap;
-	public Vector2 destinationPosition;
-}
+	

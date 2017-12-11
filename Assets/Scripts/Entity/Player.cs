@@ -8,6 +8,8 @@ public class Player : Entity {
 
 	private Deplacable dep;
 
+	private IEnumerator runningMove;
+
 	void Start(){
 		GameObject.FindWithTag ("Player LifeBar").GetComponent<LifeBar> ().entity = this;
 	}
@@ -19,7 +21,7 @@ public class Player : Entity {
 		 */
 		if (!Input.anyKeyDown || Input.inputString.Length == 0)
 			return;
-		Debug.Log ("Touche pressée : " + Input.inputString);
+		//Debug.Log ("Touche pressée : " + Input.inputString);
 		char character = Input.inputString.ToUpper () [0];
 		// No change in movement action because it's automatic
 		if (character != 'M') {
@@ -47,8 +49,12 @@ public class Player : Entity {
 		dep = gameObject.GetComponent<Deplacable> ();
 		if (!dep)
 			return false;
-		
-		StartCoroutine(MoveInProgress(cell));
+
+		if (runningMove != null) {
+			StopCoroutine (runningMove);
+		}
+		runningMove = MoveInProgress (cell);
+		StartCoroutine(runningMove);
 		return true;
 	}
 	#endregion
@@ -79,6 +85,7 @@ public class Player : Entity {
 				path = CurrentPath (destination);
 			}
 		}
+		runningMove = null;
 	}
 
 	List<Cell> CurrentPath(Cell destination) {

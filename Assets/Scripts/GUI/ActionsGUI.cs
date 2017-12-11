@@ -16,6 +16,9 @@ public class ActionsGUI : MonoBehaviour {
 		int i = 1;
 		ActionMapper actions = player.ListActions;
 		foreach (ActionLine actionline in actions.map) {
+			// The move action is not displayed
+			if (actionline.character == 'M')
+				continue;
 			Action action = actionline.action;
 			RectTransform o = Instantiate (actionGUIPrefab,new Vector2(32,32*(i*2)-32),Quaternion.identity);
 			o.transform.SetParent(this.transform);
@@ -28,6 +31,7 @@ public class ActionsGUI : MonoBehaviour {
 
 	void OnGUI(){
 		foreach (ActionGUI actionGUI in list) {
+			// LoadingTime
 			int loadingTime = ActionManager.Instance.GetLoadingTime (player,actionGUI.Action);
 			if (loadingTime > 0) {
 				actionGUI.GUI.Find ("Loading").GetComponentInChildren<Text> ().text = loadingTime.ToString ();
@@ -36,10 +40,13 @@ public class ActionsGUI : MonoBehaviour {
 				actionGUI.GUI.Find ("Loading").GetComponentInChildren<Text> ().text = "";
 				actionGUI.GUI.GetComponentInChildren<Image> ().color = Color.white;
 			}
+			// Action selected
+			actionGUI.GUI.GetComponentInChildren<Image>().color = Color.white;
+			if (actionGUI.Action.Equals (player.CurrentAction)) {
+				actionGUI.GUI.GetComponentInChildren<Image>().color = Color.green;
+			}
 		}
 	}
-
-
 }
 
 class ActionGUI{
