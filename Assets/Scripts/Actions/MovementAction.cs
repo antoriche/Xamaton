@@ -9,12 +9,12 @@ public class MovementAction : Action {
 	// Speed animation movement
 	private readonly float speed = 3f;
 
-	private IEnumerator isRunning;
+	private IEnumerator running;
   
 	#region implemented abstract members of Action
 	public override void Execute (GameObject obj, List<Cell> cells) {
-		if (isRunning != null) {
-			ActionManager.Instance.StopCoroutine (isRunning);
+		if (running != null) {
+			ActionManager.Instance.StopCoroutine (running);
 		}
 		Deplacable dep = obj.GetComponent<Deplacable> ();
 
@@ -23,8 +23,8 @@ public class MovementAction : Action {
 			Debug.Log (obj.name + " ne sait pas bouger.");
 			return;
 		}
-		isRunning = MoveCases (dep, cells);
-		ActionManager.Instance.StartCoroutine(isRunning);
+		running = MoveCases (dep, cells);
+		ActionManager.Instance.StartCoroutine(running);
 	}
 	#endregion
 
@@ -36,7 +36,7 @@ public class MovementAction : Action {
 		}
 		// Move Completed
 		ActionManager.Instance.NotifyAction ();
-		isRunning = null;
+		running = null;
 	}
 
 }

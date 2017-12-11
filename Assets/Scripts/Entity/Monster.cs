@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class Monster : Entity {
 
-
-	public Monster() {
-		
-	}
-
 	// AI of monster
 	#region implemented abstract members of Entity
 	public override bool Play (Cell cell)
@@ -34,8 +29,15 @@ public class Monster : Entity {
 		return CanExecuteAction (target);
 	}
 
+	/*
+	 * Removing the monster in a clean way from the game
+	 */
+	void OnDestroy() {
+		MobsSpawner.Instance.RemoveMonster (this);
+	}
+
 	public override void Die ()
 	{
-		MobsSpawner.Instance.MobDie (this);
+		DestroyObject (gameObject);
 	}
 }

@@ -10,30 +10,9 @@ public class MeshMap : Singleton<MeshMap>{
 	public Map CurrentMap {
 		get { return Map; }
 	}
-
-	[SerializeField]
-	PathfindingAlgorithm pathfindingAlgorithm;
-
-	[SerializeField]
-	Deplacable player;
-
-	/*
-	 * Number of the current floor, this number corresponds to 
-	 * the player's score and also to the difficulty of spawn of monsters.
-	 */
-	[SerializeField]
-	int numFloor = 0;
-	public int NumFloor {
-		get { return numFloor;}
-	}
 		
 	private Dictionary<Int32, Cell> cells;
 	private Cell mouseOver;
-
-	public List<Map> maps = new List<Map>();
-	private Map stairMap;
-	private Vector2 stairPosition;
-	public Teleporter stairCell;
 
 	/*
 	 * Height and Width of map
@@ -43,9 +22,6 @@ public class MeshMap : Singleton<MeshMap>{
 	}
 	public int WidthMap {
 		get { return Map.Width; }
-	}
-	public Deplacable Player{
-		get{ return player; }
 	}
 
 	private long version;
@@ -59,17 +35,7 @@ public class MeshMap : Singleton<MeshMap>{
 		get { return _ready; }
 	}
 
-	// Use this for initialization
-	void Start(){
-		player = Instantiate (player.gameObject, new Vector3(Map.DefaultPlayerPosition.x,Map.DefaultPlayerPosition.y,-1), Quaternion.identity).GetComponent<Deplacable> ();
-		player.name = "Player";
-		DontDestroyOnLoad (player);
-
-		Load (Map,Map.DefaultPlayerPosition,true);
-
-	}
-
-	void Unload(){
+	void UnloadMap(){
 		this._ready = false;
 		Version++;
 		if (cells == null)
@@ -79,50 +45,29 @@ public class MeshMap : Singleton<MeshMap>{
 			//Destroy (cell.Content.gameObject);
 			Destroy (cell.gameObject);
 		}
-		MobsSpawner.Instance.UnloadMap ();
 	}
 
-	public void placeStairs(){
-		int random = UnityEngine.Random.Range (0, maps.Count);
-		Map randomMap = maps.ToArray()[random];
-		stairMap = randomMap;
-		Vector2 vector = Vector2.zero;
-		Cell cell = null;
-		while (cell == null) {
-			vector = new Vector2 (UnityEngine.Random.Range (0,stairMap.Width),UnityEngine.Random.Range (0, stairMap.Height));
-			cell = stairMap.getCell ((int)vector.x, (int)vector.y);
-			Debug.Log ("Trying : "+cell.name);
-			if (cell.Content != null) {
-				cell = null;
-			}
-		}
-		stairPosition = vector;
-	}
-
-	public void Load (Map map, Vector2 playerPosition, bool newLevel = false) {
-		Unload ();
-		Debug.Log ("Load new : "+newLevel);
-		if (newLevel) {
-			placeStairs ();
-			// new floor
-			numFloor++;
-			MobsSpawner.Instance.LoadFloor ();
-		}
-		Debug.Log ("stair "+Map+" "+stairPosition);
+	public void LoadMap (Map map, MapRules rules) {
+		UnloadMap ();
 		this.Map = map;
 		cells = new Dictionary<Int32,Cell> ();
+		// current stair
+		FloorManager.FloorStair stair = FloorManager.Instance.Stair;
+
+		Debug.Log (map);
 
 		int i = 0;
-		for (int x = 0; x < Map.Width; x++) {
-			for (int y = 0; y < Map.Height; y++) {
-				Cell cell = Map.getCell (x, y);
-				if (Map.Equals (stairMap) && stairPosition == new Vector2(x,y)) {
-					cell = stairCell.gameObject.GetComponent<Cell>();
+		for (int y = 0; y < Map.Height; y++) {
+			for (int x = 0; x < Map.Width; x++) {
+				Cell cell = Map.getCell (rules, x, y);
+				if (Map.Equals (stair.StairMap) && stair.StairPosition == new Vector2(x,y)) {
+					cell = stair.StairCell.gameObject.GetComponent<Cell>();
 				}
 				cell = Instantiate (cell, getPositionFromCell (i) + new Vector2 (0.5f, 0.5f), Quaternion.identity).GetComponent<Cell> ();
 				cell.init (i, null);
 				cells.Add (cell.Id,cell);
 				cell.transform.parent = gameObject.transform;
+				//Debug.Log (i + " " + cell);
 				// Rotation for texture
 				cell.transform.rotation = Quaternion.Euler (0, 0, 180);
 				i++;
@@ -136,7 +81,7 @@ public class MeshMap : Singleton<MeshMap>{
 			c.BindOn ((c.Id)%(Map.Height)>=Map.Width-1?null:getCellFromId(c.Id+1),Cell.RIGHT);
 		}
 
-		foreach (TeleporterLine teleporterLine in Map.teleporters) {
+		foreach (Map.TeleporterLine teleporterLine in Map.Teleporters) {
 			Teleporter teleporter = getCellFromPosition (teleporterLine.origin).gameObject.AddComponent<Teleporter> ();
 			teleporter.Destination (teleporterLine.destinationMap,teleporterLine.destinationPosition);
 		}
@@ -152,8 +97,6 @@ public class MeshMap : Singleton<MeshMap>{
 				Debug.LogWarning("Bug cell "+c.Id);
 			}
 		}*/
-
-		player.Cell = getCellFromPosition (playerPosition);
 
 		PutCameraOverMap ();
 		this._ready = true;
@@ -261,31 +204,6 @@ public class MeshMap : Singleton<MeshMap>{
 		
 		ActionManager.Instance.Player.Play(cell);
 		cell.Select = false;
-	}
-
-	//this method will test pathfinding feature
-	private void makePath(){
-		Cell first = null, second = null;
-		foreach (Cell c in cells.Values) {
-			if (c.Select) {
-				if (first) {
-					if (second) {
-						first.Select = false;
-						second.Select = false;
-						c.Select = false;
-					} else {
-						second = c;
-					}
-				} else {
-					first = c;
-				}
-			}
-		}
-		if (first && second && first.Select && second.Select) {
-			foreach (Cell c in pathfindingAlgorithm.getPath(first,second)) {
-				c.Select = true;
-			}
-		}
 	}
 
 	public void UnselectAll(){
