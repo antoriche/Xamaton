@@ -28,6 +28,10 @@ public class Monster : Entity {
 
 	private bool CanAttack(List<Cell> target) {
 		ChangeCurrentAction ('A');
+		if (CanExecuteAction (target)) {
+			return true;
+		}
+		ChangeCurrentAction ('Z');
 		return CanExecuteAction (target);
 	}
 
