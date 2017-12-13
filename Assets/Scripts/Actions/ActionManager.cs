@@ -92,11 +92,4 @@ public class ActionManager : Singleton<ActionManager> {
 		// Now, it's the last
 		entities.AddLast (next);
 	}
-
-
-
-	public int GetLoadingTime(Entity entity, Action action){
-		//TODO
-		return 0;
-	}
 }

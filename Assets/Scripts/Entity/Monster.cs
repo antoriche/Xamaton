@@ -38,6 +38,12 @@ public class Monster : Entity {
 
 	public override void Die ()
 	{
+		// position in cell
+		Vector3 position = gameObject.gameObject.transform.position;
+		position.x -= 0.5f;
+		position.y -= 0.5f;
 		DestroyObject (gameObject);
+		// drop items
+		ItemsSpawner.Instance.RandomItem (position);
 	}
 }

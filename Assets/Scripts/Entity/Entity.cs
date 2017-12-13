@@ -9,11 +9,11 @@ public abstract class Entity : MonoBehaviour {
 	private int Id;
 
 	// List actions allowed for the entity
-	private Dictionary<Char, Action> actions = new Dictionary<Char, Action> ();
+	private Dictionary<Char, ItemLine> inventory = new Dictionary<Char, ItemLine> ();
 	[SerializeField]
-	ActionMapper listActions;
-	public ActionMapper ListActions {
-		get { return listActions; }
+	Inventory listItems;
+	public Inventory ListItems {
+		get { return listItems; }
 	}
 	[SerializeField]
 	int maxLife = 100;
@@ -27,7 +27,7 @@ public abstract class Entity : MonoBehaviour {
 		get { return this.attack;}
 	}
 
-	// Current action
+	// Current action selected
 	private Action currentAction;
 	public Action CurrentAction {
 		// Get, but not set
@@ -38,8 +38,8 @@ public abstract class Entity : MonoBehaviour {
 		ENTITY_ID++;
 		this.Id = ENTITY_ID;
 		// load actions
-		foreach (ActionLine line in ListActions.map) {
-			actions.Add (line.character, line.action);
+		foreach (KeyLine line in ListItems.map) {
+			inventory.Add (line.character, line.itemLine);
 		}
 	}
 
@@ -60,14 +60,16 @@ public abstract class Entity : MonoBehaviour {
 	 * @return bool
 	 */
 	public bool ChangeCurrentAction(char action) {
-		if (!actions.ContainsKey (action))	
+		if (!inventory.ContainsKey (action))	
 			return false;
 		
 		if(currentAction)
 			currentAction.Disable ();
 		
-		Action changeAction = null;
-		actions.TryGetValue(action, out changeAction);
+		ItemLine itemLine = null;
+		inventory.TryGetValue(action, out itemLine);
+		// retrieve action bound to item
+		Action changeAction = itemLine.item.ActionBound;
 		// if equals => cancellation
 		if (currentAction != null && currentAction.Equals(changeAction)) {
 			currentAction = null;

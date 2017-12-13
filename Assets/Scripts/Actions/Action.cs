@@ -12,14 +12,6 @@ public abstract class Action : ScriptableObject {
 		}
 	}
 
-	[SerializeField]
-	private int loadingTime;
-	public virtual int LoadingTime {
-		get {
-			return loadingTime;
-		}
-	}
-
 	public virtual void Enable (GameObject obj) {}
 
 	public abstract void Execute(GameObject obj, List<Cell> cells);
