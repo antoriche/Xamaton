@@ -4,20 +4,7 @@ using UnityEngine;
 
 public class Monster : Entity {
 
-	[SerializeField]
-	private int level = 1;
-	public int Level{
-		get{ return level; }
-		set{ 
-			if (value <= 0)
-				throw new System.InvalidOperationException ("Level must be higher than 0 !");
-			level = value;
-
-			attack = initialAttack + (level / 4);
-			maxLife = initialMaxLife + (level*3);
-			life = maxLife;
-		}
-	}
+	public int experience = 1;
 
 	// AI of monster
 	#region implemented abstract members of Entity
@@ -53,6 +40,7 @@ public class Monster : Entity {
 
 	public override void Die ()
 	{
+		GameObject.FindWithTag ("Player").GetComponent<Player> ().Experience += this.experience;
 		DestroyObject (gameObject);
 	}
 }

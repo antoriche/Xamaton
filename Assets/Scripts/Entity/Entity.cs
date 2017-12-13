@@ -17,19 +17,49 @@ public abstract class Entity : MonoBehaviour {
 	}
 
 	[SerializeField]
-	protected int initialMaxLife, initialAttack;
+	protected Stats initialStats;
 
+	[SerializeField]
+	protected Stats stats;
+
+	public Leveling leveling;
+
+	[SerializeField]
+	private int level = 1;
+	public int Level{
+		get{ return level; }
+		set{ 
+			if (value <= 0)
+				throw new System.InvalidOperationException ("Level must be higher than 0 !");
+			level = value;
+
+			stats = leveling.Level (initialStats,level);
+			life = stats.maxLife;
+		}
+	}
+
+	/*[SerializeField]
+	protected int initialMaxLife, initialAttack;
 	[SerializeField]
 	protected int maxLife;
 	public int MaxLife{ get { return maxLife; } }
 	[SerializeField]
-	protected int life;
-	public int Life{ get { return life; } }
-	[SerializeField]
 	protected int attack;
 	public int Attack {
 		get { return this.attack;}
+	}*/
+
+	public int MaxLife{
+		get { return stats.maxLife;}
 	}
+
+	public int Attack {
+		get { return stats.attack;}
+	}
+
+	[SerializeField]
+	protected int life;
+	public int Life{ get { return life; } }
 
 	// Current action
 	private Action currentAction;
@@ -45,9 +75,8 @@ public abstract class Entity : MonoBehaviour {
 		foreach (ActionLine line in ListActions.map) {
 			actions.Add (line.character, line.action);
 		}
-		attack = initialAttack;
-		maxLife = initialMaxLife;
-		life = maxLife;
+		stats = initialStats;
+		life = stats.maxLife;
 	}
 
 	void OnEnable() {
@@ -139,4 +168,10 @@ public abstract class Entity : MonoBehaviour {
 	public override int GetHashCode() {
 		return this.Id;
 	}
+}
+
+[System.Serializable]
+public class Stats{
+	public int maxLife;
+	public int attack;
 }

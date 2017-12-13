@@ -5,8 +5,16 @@ using UnityEngine.UI;
 
 public class FloorGUI : MonoBehaviour {
 
+	Player player;
+
+	void Start(){
+		player = GameObject.FindWithTag ("Player").GetComponent<Player>();
+	}
+
 	// update the floor number
 	void OnGUI() {
-		gameObject.GetComponent<Text>().text = "Etage " + FloorManager.Instance.NumFloor + "\n[" + FloorManager.Instance.Coordinates[0] + ";" + FloorManager.Instance.Coordinates[1] + "]";
+		gameObject.GetComponent<Text>().text = "Etage " + FloorManager.Instance.NumFloor + "\n" +
+			"[" + FloorManager.Instance.Coordinates[0] + ";" + FloorManager.Instance.Coordinates[1] + "]\n" +
+			"Niveau "+player.Level;
 	}
 }

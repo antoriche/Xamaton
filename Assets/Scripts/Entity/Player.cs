@@ -6,6 +6,21 @@ using UnityEngine.SceneManagement;
 
 public class Player : Entity {
 
+	private int experience = 0;
+	private int required_experience = 1;
+	public int Experience {
+		get{ return experience; }
+		set{ 
+			experience = value;
+			if (experience >= required_experience) {
+				Level++;
+				int r = required_experience;
+				required_experience *=2;
+				Experience -= r;
+			}
+		}
+	}
+
 	private Deplacable dep;
 
 	private IEnumerator runningMove;

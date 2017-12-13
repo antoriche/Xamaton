@@ -15,7 +15,7 @@ public class MobsSpawner : Singleton<MobsSpawner> {
 
 	private int _nbrMonsters = 0;
 
-	public List<Monster> mobsPrefabs;
+	public List<ProbabilitySpawn> mobsPrefabs;
 
 	public readonly int initialSpawnMin = 2; // Min 2 monsters on the floor
 	public readonly int initialSpawnMax = 5; // Max 5 monsters on the floor
@@ -98,7 +98,7 @@ public class MobsSpawner : Singleton<MobsSpawner> {
 			this._monsters.Add(map, new List<Monster>());
 		}
 		List<Monster> listMonsters = this._monsters [map];
-		Monster mobsPrefab = mobsPrefabs.ToArray()[Random.Range (0, mobsPrefabs.Count)];
+		Monster mobsPrefab = GetRandomMonster();
 		GameObject obj = GameObject.Instantiate<GameObject> (mobsPrefab.gameObject);
 		Monster monster = obj.GetComponent<Monster> ();
 		monster.Level = this.Level;
@@ -188,4 +188,28 @@ public class MobsSpawner : Singleton<MobsSpawner> {
 			AddMonster ();
 		}
 	}
+
+	Monster GetRandomMonster(){
+		float sum = 0;
+		foreach (ProbabilitySpawn prob in mobsPrefabs) {
+			sum += prob.weight;
+		}
+		float roll = Random.Range (1, sum + 1);
+		float cursor = 0;
+		if (mobsPrefabs.Count > 0) {
+			foreach (ProbabilitySpawn item in mobsPrefabs) {
+				cursor += item.weight;
+				if (cursor >= roll) {
+					return item.element;
+				}
+			}
+		}
+		return null;
+	}
+}
+
+[System.Serializable]
+public class ProbabilitySpawn{
+	public Monster element;
+	public float weight;
 }
