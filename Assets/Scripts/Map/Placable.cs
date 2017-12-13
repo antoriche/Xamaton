@@ -25,13 +25,9 @@ public class Placable : MonoBehaviour {
 			return cell_;
 		}
 		set{
-			if (value == null)
+			if (value == null) {
 				return;
-			
-			/*if ((value.Content != null && !value.Content.Equals(this))) {
-				throw new System.InvalidOperationException ("Placable "+this.name+" must have a Cell");
-				return; //Exception ?
-			}*/
+			}
 			Cell old = cell_;
 			cell_ = value;
 

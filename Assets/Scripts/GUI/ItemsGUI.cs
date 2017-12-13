@@ -4,35 +4,35 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class ActionsGUI : MonoBehaviour {
+public class ItemsGUI : Singleton<ItemsGUI> {
 
-	public RectTransform actionGUIPrefab;
+	public RectTransform itemGUIPrefab;
 
-	private List<ActionGUI> list = new List<ActionGUI>();
+	private List<ItemGUI> list = new List<ItemGUI>();
 	private Player player;
 
 	void Start(){
 		player = GameObject.FindWithTag ("Player").GetComponent<Player> ();
 		int i = 1;
-		ActionMapper actions = player.ListActions;
-		foreach (ActionLine actionline in actions.map) {
+		Inventory items = player.ListItems;
+		foreach (KeyLine keyline in items.map) {
 			// The move action is not displayed
-			if (actionline.character == 'M')
+			if (keyline.character == 'M')
 				continue;
-			Action action = actionline.action;
-			RectTransform o = Instantiate (actionGUIPrefab,new Vector2(32,32*(i*2)-32),Quaternion.identity);
+			Action action = keyline.itemLine.item.ActionBound;
+			RectTransform o = Instantiate (itemGUIPrefab,new Vector2(32,32*(i*2)-32),Quaternion.identity);
 			o.transform.SetParent(this.transform);
-			o.GetComponentInChildren<Image>().sprite = action.Image;
-			o.Find("Key Panel").GetComponentInChildren<Text>().text = actionline.character.ToString();
-			list.Add ( new ActionGUI{GUI = o , Action = action} );
+			o.GetComponentInChildren<Image>().sprite = keyline.itemLine.item.GetComponentInChildren<SpriteRenderer>().sprite;
+			o.Find("Key Panel").GetComponentInChildren<Text>().text = keyline.character.ToString();
+			list.Add ( new ItemGUI{GUI = o , Action = action} );
 			i++;
 		}
 	}
 
 	void OnGUI(){
-		foreach (ActionGUI actionGUI in list) {
+		foreach (ItemGUI itemGUI in list) {
 			// LoadingTime
-			int loadingTime = ActionManager.Instance.GetLoadingTime (player,actionGUI.Action);
+			int quantity = item
 			if (loadingTime > 0) {
 				actionGUI.GUI.Find ("Loading").GetComponentInChildren<Text> ().text = loadingTime.ToString ();
 				actionGUI.GUI.GetComponentInChildren<Image> ().color = Color.grey;
@@ -47,10 +47,10 @@ public class ActionsGUI : MonoBehaviour {
 			}
 		}
 	}
-}
 
-class ActionGUI{
-	
-	public Action Action;
-	public RectTransform GUI;
+	class ItemGUI{
+
+		public Action Action;
+		public RectTransform GUI;
+	}
 }
