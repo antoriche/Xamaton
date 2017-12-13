@@ -15,11 +15,28 @@ public class MobsSpawner : Singleton<MobsSpawner> {
 
 	private int _nbrMonsters = 0;
 
-	public GameObject mobsPrefab;
+	public List<Monster> mobsPrefabs;
+
+	public readonly int initialSpawnMin = 2; // Min 2 monsters on the floor
+	public readonly int initialSpawnMax = 5; // Max 5 monsters on the floor
 
 	// Spawn minimum and maximum monsters
-	public int spawnMin = 2; // Min 2 monsters on the floor
-	public int spawnMax = 5; // Max 5 monsters on the floor
+	private int spawnMin;
+	private int spawnMax; 
+
+	[SerializeField]
+	private int level = 1;
+	public int Level{
+		get{ return level; }
+		set{ 
+			if (value <= 0)
+				throw new System.InvalidOperationException ("Level must be higher than 0 !");
+			level = value;
+
+			spawnMin = initialSpawnMin + (level / 3);
+			spawnMax = initialSpawnMax + (level * initialSpawnMax / 10);
+		}
+	}
 
 	/*
 	 * When loading one map
@@ -60,7 +77,9 @@ public class MobsSpawner : Singleton<MobsSpawner> {
 			}
 		}
 		this._monsters.Clear();
+
 		// Spawn monsters on the new floor
+		this.Level = FloorManager.Instance.NumFloor;
 		while (this._nbrMonsters <= spawnMin) {
 			AddMonster ();
 		}
@@ -79,8 +98,10 @@ public class MobsSpawner : Singleton<MobsSpawner> {
 			this._monsters.Add(map, new List<Monster>());
 		}
 		List<Monster> listMonsters = this._monsters [map];
-		GameObject obj = GameObject.Instantiate<GameObject> (mobsPrefab);
+		Monster mobsPrefab = mobsPrefabs.ToArray()[Random.Range (0, mobsPrefabs.Count)];
+		GameObject obj = GameObject.Instantiate<GameObject> (mobsPrefab.gameObject);
 		Monster monster = obj.GetComponent<Monster> ();
+		monster.Level = this.Level;
 		monster.gameObject.SetActive (false);
 		monster.gameObject.transform.position = Vector3.zero;
 		listMonsters.Add (monster);
@@ -138,7 +159,7 @@ public class MobsSpawner : Singleton<MobsSpawner> {
 			if (randomPosition.HasValue) {
 				Debug.Log ("Spawn monster : " + randomPosition);
 				obj.transform.position = new Vector3 (randomPosition.Value.x, randomPosition.Value.y, -1.0f);
-				obj.name = mobsPrefab.name;
+				obj.name = monster.gameObject.name.Replace("(Clone)","");
 				obj.SetActive (true);
 				obj.GetComponent<Placable> ().PlaceObject ();
 			}

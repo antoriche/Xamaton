@@ -15,14 +15,18 @@ public abstract class Entity : MonoBehaviour {
 	public ActionMapper ListActions {
 		get { return listActions; }
 	}
+
 	[SerializeField]
-	int maxLife = 100;
+	protected int initialMaxLife, initialAttack;
+
+	[SerializeField]
+	protected int maxLife;
 	public int MaxLife{ get { return maxLife; } }
 	[SerializeField]
-	int life = 100;
+	protected int life;
 	public int Life{ get { return life; } }
 	[SerializeField]
-	int attack = 5;
+	protected int attack;
 	public int Attack {
 		get { return this.attack;}
 	}
@@ -41,6 +45,9 @@ public abstract class Entity : MonoBehaviour {
 		foreach (ActionLine line in ListActions.map) {
 			actions.Add (line.character, line.action);
 		}
+		attack = initialAttack;
+		maxLife = initialMaxLife;
+		life = maxLife;
 	}
 
 	void OnEnable() {
