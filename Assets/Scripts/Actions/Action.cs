@@ -1,16 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public abstract class Action : ScriptableObject {
 
-	[SerializeField]
-	private Sprite image;
-	public Sprite Image {
-		get {
-			return image;
-		}
-	}
+	// action keyboard :
+	public static readonly char[] ACTION_KEY = new char[] {'M', 'A', 'Z', 'E'};
+	public enum Category { Movement, }
 
 	public virtual void Enable (GameObject obj) {}
 

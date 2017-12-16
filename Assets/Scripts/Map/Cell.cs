@@ -36,7 +36,7 @@ public class Cell : MonoBehaviour{
 		get { return item; }
 		set {
 			// if this cell is not a obstacle
-			if (!this.ContainObject()) {
+			if (!this.CanDropItem()) {
 				this.item = value;
 			}
 		}
@@ -118,8 +118,8 @@ public class Cell : MonoBehaviour{
 	/*
 	 * Check if this cell contains an object : Placable (Obstacle) or Item
 	 */
-	public bool ContainObject() {
-		if (this.item == null)
+	public bool CanDropItem() {
+		if (this.item == null && (this.content != null && this.content.GetType() == typeof(Cell) || this.content == null))
 			return false;
 		return true;
 	}
