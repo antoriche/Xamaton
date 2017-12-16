@@ -9,12 +9,12 @@ public abstract class Entity : MonoBehaviour {
 	private int Id;
 
 	// List actions allowed for the entity
-	private Dictionary<Char, ItemLine> inventory = new Dictionary<Char, ItemLine> ();
+	private Dictionary<Char, ItemLine> _inventory = new Dictionary<Char, ItemLine> ();
+	public Dictionary<Char, ItemLine> Inventory {
+		get { return this._inventory; }
+	}
 	[SerializeField]
 	Inventory listItems;
-	public Inventory ListItems {
-		get { return listItems; }
-	}
 	[SerializeField]
 	int maxLife = 100;
 	public int MaxLife{ get { return maxLife; } }
@@ -38,8 +38,8 @@ public abstract class Entity : MonoBehaviour {
 		ENTITY_ID++;
 		this.Id = ENTITY_ID;
 		// load actions
-		foreach (KeyLine line in ListItems.map) {
-			inventory.Add (line.character, line.itemLine);
+		foreach (KeyLine line in listItems.map) {
+			_inventory.Add (line.character, line.itemLine);
 		}
 	}
 
@@ -60,14 +60,14 @@ public abstract class Entity : MonoBehaviour {
 	 * @return bool
 	 */
 	public bool ChangeCurrentAction(char action) {
-		if (!inventory.ContainsKey (action))	
+		if (!_inventory.ContainsKey (action))	
 			return false;
 		
 		if(currentAction)
 			currentAction.Disable ();
 		
 		ItemLine itemLine = null;
-		inventory.TryGetValue(action, out itemLine);
+		_inventory.TryGetValue(action, out itemLine);
 		// retrieve action bound to item
 		Action changeAction = itemLine.item.ActionBound;
 		// if equals => cancellation

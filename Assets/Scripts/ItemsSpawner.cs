@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ItemsSpawner : Singleton<ItemsSpawner> {
+	
 
 	[SerializeField]
 	List<Item> prefabItems;
@@ -53,7 +54,7 @@ public class ItemsSpawner : Singleton<ItemsSpawner> {
 	 * @return bool
 	 */
 	public bool InstanciateItem(Item item, Cell cell) {
-		if (cell == null || cell.ContainObject()) {
+		if (cell == null || cell.CanDropItem()) {
 			return false;
 		}
 
