@@ -31,7 +31,19 @@ public class MovementAction : Action {
 	IEnumerator MoveCases(Deplacable d, List<Cell> c) {
 		// Move in progress
 		for (int i = 0; i < d.CasePerTurn; i++) {
-			d.MoveOneToward (c[i]);
+			Cell currentCell = c [i];
+			d.MoveOneToward (currentCell);
+			// if item on the ground
+			if (currentCell.ItemObject) {
+				Entity ent = d.GetComponent<Entity> ();
+				// if item added
+				Item item = currentCell.ItemObject.Item;
+				if (ent.AddItemInInventory (item)) {
+					// remove item
+					FloorManager.Instance.Spawners.Remove(currentCell.ItemObject);
+				}
+			}
+
 			yield return new WaitForSeconds(1/speed);
 		}
 		// Move Completed

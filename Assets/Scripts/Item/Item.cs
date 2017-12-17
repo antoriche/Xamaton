@@ -1,11 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class Item : MonoBehaviour {
+[CreateAssetMenu(menuName="Item/New Item")]
+public class Item : ScriptableObject {
 
-	// drop rate
-	public enum Rarity {NORMAL = 80, GOLD = 100};
+	// drop rate 
+	public enum Rarity {NORMAL = 100, GOLD = 10};
+
+	// unique id for an item
+	private string _itemId = System.Guid.NewGuid().ToString();
+	public string Id {
+		get { return this._itemId; }
+	}
+
+	[SerializeField]
+	Sprite sprite;
+	public Sprite Sprite {
+		get { return sprite; }
+	}
 
 	// action bound
 	// For example : Arrow => AttackAction, Health Potion => HealthAction  
@@ -35,9 +49,20 @@ public class Item : MonoBehaviour {
 	public bool IsDroppable {
 		get { return this.droppable; }
 	}
+		
+	public bool Equals(Item i) {
+		if (i == null) {
+			return false;
+		}
+		if (this._itemId.Equals(i.Id))
+			return true;
+		return false;
+	}
+	public override bool Equals(object o) {
+		return Equals (o as Item);
+	}
 
-
-	public void AddItemInInventory(Entity entity) {
-
+	public override int GetHashCode() {
+		return this._itemId.GetHashCode();
 	}
 }

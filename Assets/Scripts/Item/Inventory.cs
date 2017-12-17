@@ -6,14 +6,9 @@ using System;
 [CreateAssetMenu(menuName="Items/Inventory")]
 public class Inventory : ScriptableObject {
 	[SerializeField]
-	public List<KeyLine> map;
+	public List<ItemLine> map;
 }
-
-[System.Serializable]
-public class KeyLine{
-	public Char character;
-	public ItemLine itemLine;
-}
+	
 [System.Serializable]
 public class ItemLine {
 	public Item item;

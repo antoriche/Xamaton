@@ -5,10 +5,6 @@ using UnityEngine;
 public class ActionManager : Singleton<ActionManager> {
 	
 	private LinkedList<Entity> entities = new LinkedList<Entity> ();
-	private Player _player;
-	public Player Player {
-		get { return _player; }
-	}
 
 	// Turn in progress
 	private bool _turn;
@@ -18,8 +14,8 @@ public class ActionManager : Singleton<ActionManager> {
 			_turn = value; 
 			// Creation one turn
 			if (_turn == true) {
-				entities.Remove (Player);
-				entities.AddLast (Player);
+				entities.Remove (FloorManager.Instance.Player);
+				entities.AddLast (FloorManager.Instance.Player);
 			}
 		}
 	}
@@ -29,12 +25,6 @@ public class ActionManager : Singleton<ActionManager> {
 	public int TotalTurn {
 		get { return _totalTurn; }
 		set { _totalTurn = value; }
-	}
-
-	// Use this for initialization
-	void Start () {
-		Player player = GameObject.FindGameObjectWithTag ("Player").GetComponent<Player> ();
-		_player = player;
 	}
 
 	/*
@@ -55,7 +45,7 @@ public class ActionManager : Singleton<ActionManager> {
 	/* Remove All monsters */
 	public void RemoveAllMonsters() {
 		entities = new LinkedList<Entity> ();
-		entities.AddFirst (Player);
+		entities.AddFirst (FloorManager.Instance.Player);
 	}
 
 	/**
@@ -67,7 +57,7 @@ public class ActionManager : Singleton<ActionManager> {
 		Entity next = entities.First.Value;
 
 		// if it's the player, one turn completed
-		if (next.Equals (Player)) {
+		if (next.Equals (FloorManager.Instance.Player)) {
 			Turn = false;
 			TotalTurn++;
 			Debug.Log ("Tour de jeu : " + TotalTurn);
@@ -83,8 +73,8 @@ public class ActionManager : Singleton<ActionManager> {
 		entities.RemoveFirst ();
 
 		// The monsters play one to one
-		if (!next.Equals (Player)) {
-			if (!next.Play (Player.GetComponent<Deplacable> ().Cell)) {
+		if (!next.Equals (FloorManager.Instance.Player)) {
+			if (!next.Play (FloorManager.Instance.Player.GetComponent<Deplacable> ().Cell)) {
 				Debug.Log("Le monstre a eu la flemme de jouer.");
 			}
 		}

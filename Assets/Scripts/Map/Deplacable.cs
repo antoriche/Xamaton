@@ -19,29 +19,6 @@ public class Deplacable : Placable {
 		get { return casePerTurn; }
 	}
 
-	/*bool MoveInDirection(int direction){
-			return false;
-		Cell c = this.Cell.NeighborAt (direction);
-		if (!c || c.Content || PM <= 0)
-			return false;
-		Cell = c;
-		return true;
-	}
-	public bool MoveAt(Cell cell){
-		List<Cell> path = pathfindingAlgorithm.getPath (this.Cell,cell);
-		if (path == null || path.Count > PM)
-			return false;
-		Cell = cell;
-		return true;
-	}
-	public bool MoveToward(Cell cell){
-		List<Cell> path = pathfindingAlgorithm.getPath (this.Cell,cell);
-		if (path == null || PM <= 0)
-			return false;
-		Cell = path.ToArray()[Mathf.Min(path.Count,PM)];
-		return true;
-	}*/
-
 	public bool MoveOneToward(Cell cell){
 		if (cell == null)
 			return false;

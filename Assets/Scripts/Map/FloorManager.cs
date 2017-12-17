@@ -13,6 +13,13 @@ public class FloorManager : Singleton<FloorManager> {
 	[SerializeField]
 	MapRules mapRules;
 
+	// Spawners
+	[SerializeField]
+	ListSpawners spawners;
+	public ListSpawners Spawners {
+		get { return spawners; }
+	}
+
 	// Size floor
 	private int _width;
 	private int _height;
@@ -31,8 +38,8 @@ public class FloorManager : Singleton<FloorManager> {
 	}
 
 	[SerializeField]
-	Deplacable player;
-	public Deplacable Player {
+	Player player;
+	public Player Player {
 		get { return player; }
 	}
 	/*
@@ -50,9 +57,8 @@ public class FloorManager : Singleton<FloorManager> {
 		get { return this._coordinatesCurrentMap; }
 	}
 
-	// Use this for initialization
-	void Start () {
-		player = Instantiate (player.gameObject, new Vector3(0,0,-1), Quaternion.identity).GetComponent<Deplacable> ();
+	void Start() {
+		player = Instantiate (player.gameObject, new Vector3 (0, 0, -1), Quaternion.identity).GetComponent<Player> ();
 		player.name = "Player";
 
 		LoadFloor ();
@@ -91,7 +97,7 @@ public class FloorManager : Singleton<FloorManager> {
 		// New floor
 		numFloor++;
 		LoadMap (this._coordinatesCurrentMap, playerPosition, false);
-		MobsSpawner.Instance.LoadFloor ();
+		spawners.LoadFloor ();
 	}
 
 	/*
@@ -129,9 +135,16 @@ public class FloorManager : Singleton<FloorManager> {
 		if (newFloor) {
 			LoadFloor ();
 		} else {
+			// unload current map
+			spawners.UnloadMap(MeshMap.Instance.CurrentMap);
+
+			// load new map
 			this._coordinatesCurrentMap = coordMap;
-			MeshMap.Instance.LoadMap (ConvertCoordinatesToMap (coordMap), mapRules);
-			player.Cell = MeshMap.Instance.getCellFromPosition (playerPosition);
+			Map map = ConvertCoordinatesToMap (coordMap);
+			MeshMap.Instance.LoadMap (map, mapRules);
+			spawners.LoadMap(MeshMap.Instance.CurrentMap);
+
+			player.GetComponent<Deplacable>().Cell = MeshMap.Instance.getCellFromPosition (playerPosition);
 		}
 	}
 

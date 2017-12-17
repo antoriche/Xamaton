@@ -31,12 +31,12 @@ public class Cell : MonoBehaviour{
 
 	// Item
 	[SerializeField]
-	Item item;
-	public Item Item {
+	ItemObject item;
+	public ItemObject ItemObject {
 		get { return item; }
 		set {
 			// if this cell is not a obstacle
-			if (!this.CanDropItem()) {
+			if (this.CanDropItem()) {
 				this.item = value;
 			}
 		}
@@ -119,9 +119,9 @@ public class Cell : MonoBehaviour{
 	 * Check if this cell contains an object : Placable (Obstacle) or Item
 	 */
 	public bool CanDropItem() {
-		if (this.item == null && (this.content != null && this.content.GetType() == typeof(Cell) || this.content == null))
-			return false;
-		return true;
+		if (this.item == null && (this.content != null && this.content.GetType() == typeof(Entity) || this.content == null))
+			return true;
+		return false;
 	}
 
 	private Color defaultColor;

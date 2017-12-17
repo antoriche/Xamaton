@@ -18,7 +18,6 @@ public class AttackAction : Action
 	// Contain radius cell
 	private List<Cell> radiusAttack = null; 
 
-
 	public override void Enable (GameObject obj)
 	{
 		base.Enable (obj);
@@ -61,6 +60,7 @@ public class AttackAction : Action
 			int totalDamage = Random.Range (damageMin, damageMax) * entityAttack.Attack;
 			entityTargeted.TakeDamage (totalDamage);
 			Debug.Log (obj.name + " attaque " + entityTargeted.name + " avec " + attackName + " pour " + totalDamage + " de dégats !");
+			base.Execute (obj, cells);
 		} else {
 			Debug.Log (obj.name + " n'a pas la portée pour attaquer.");
 		}

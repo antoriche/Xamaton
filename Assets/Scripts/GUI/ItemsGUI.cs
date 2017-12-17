@@ -68,7 +68,7 @@ public class ItemsGUI : Singleton<ItemsGUI> {
 				Debug.Log ("ItemGui : " + itemline.item.name);
 				itemGui.Item = itemline.item;
 				itemGui.Quantity = 0;
-				itemGui.GUI.GetComponentInChildren<Image>().sprite = itemline.item.GetComponentInChildren<SpriteRenderer>().sprite;
+				itemGui.GUI.GetComponentInChildren<Image>().sprite = itemline.item.Sprite;
 				itemGui.GUI.GetComponentInChildren<Image>().color = Color.white; 
 			}
 
