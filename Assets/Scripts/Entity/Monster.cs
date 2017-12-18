@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Monster : Entity {
 
+	public int experience = 1;
+
 	// AI of monster
 	#region implemented abstract members of Entity
 	public override bool Play (Cell cell)
@@ -41,6 +43,10 @@ public class Monster : Entity {
 
 	private bool CanAttack(List<Cell> target) {
 		ChangeCurrentAction ('A');
+		if (CanExecuteAction (target)) {
+			return true;
+		}
+		ChangeCurrentAction ('Z');
 		return CanExecuteAction (target);
 	}
 
@@ -49,5 +55,7 @@ public class Monster : Entity {
 		// drop items
 		FloorManager.Instance.Spawners.Add (this);
 		FloorManager.Instance.Spawners.Remove (this);
+		GameObject.FindWithTag ("Player").GetComponent<Player> ().Experience += this.experience;
+		DestroyObject (gameObject);
 	}
 }

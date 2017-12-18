@@ -13,23 +13,53 @@ public abstract class Entity : Spawnable {
 	public Dictionary<Char, ItemLine> Inventory {
 		get { return this._inventory; }
 	}
+
 	[SerializeField]
-	Inventory listItems;
+	protected Stats initialStats;
+
 	[SerializeField]
-	int maxLife = 100;
-	public int MaxLife{ get { return maxLife; } }
+	protected Stats stats;
+
+	public Leveling leveling;
+
 	[SerializeField]
-	int life = 100;
-	public int Life{ 
-		get { return life; } 
-	}
-	[SerializeField]
-	int attack = 5;
-	public int Attack {
-		get { return this.attack;}
+	private int level = 1;
+	public int Level{
+		get{ return level; }
+		set{ 
+			if (value <= 0)
+				throw new System.InvalidOperationException ("Level must be higher than 0 !");
+			level = value;
+
+			stats = leveling.Level (initialStats,level);
+			life = stats.maxLife;
+		}
 	}
 
-	// Current action selected
+	/*[SerializeField]
+	protected int initialMaxLife, initialAttack;
+	[SerializeField]
+	protected int maxLife;
+	public int MaxLife{ get { return maxLife; } }
+	[SerializeField]
+	protected int attack;
+	public int Attack {
+		get { return this.attack;}
+	}*/
+
+	public int MaxLife{
+		get { return stats.maxLife;}
+	}
+
+	public int Attack {
+		get { return stats.attack;}
+	}
+
+	[SerializeField]
+	protected int life;
+	public int Life{ get { return life; } }
+
+	// Current action
 	private Action currentAction;
 	public Action CurrentAction {
 		// Get, but not set
@@ -47,6 +77,8 @@ public abstract class Entity : Spawnable {
 			itemLine.quantity = line.quantity;
 			_inventory.Add (Action.ACTION_KEY[(int)line.item.ActionBound.DefaultCategory], itemLine);
 		}
+		stats = initialStats;
+		life = stats.maxLife;
 	}
 
 	void OnEnable() {
@@ -216,4 +248,10 @@ public abstract class Entity : Spawnable {
 	public override int GetHashCode() {
 		return this.Id;
 	}
+}
+
+[System.Serializable]
+public class Stats{
+	public int maxLife;
+	public int attack;
 }
