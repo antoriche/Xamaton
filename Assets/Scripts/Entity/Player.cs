@@ -55,7 +55,21 @@ public class Player : Entity {
 			ActionManager.Instance.Turn = true;
 			if (!ExecuteAction (cells)) {
 				ActionManager.Instance.Turn = false;
-				Debug.Log ("Aucun sort sélectionné");
+				Debug.Log ("Aucun sort de dégats sélectionné");
+				return false;
+			}
+			return true;
+		}
+		// if cell contains player => buff
+		if (cell.Content && cell.Content.GetComponents<Player> () != null) {
+
+			List<Cell> cells = new List<Cell> ();
+			cells.Add (cell);
+			// Turn in progress
+			ActionManager.Instance.Turn = true;
+			if (!ExecuteAction (cells)) {
+				ActionManager.Instance.Turn = false;
+				Debug.Log ("Aucun sort de buff sélectionné");
 				return false;
 			}
 			return true;

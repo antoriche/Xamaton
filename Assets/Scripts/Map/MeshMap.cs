@@ -40,7 +40,6 @@ public class MeshMap : Singleton<MeshMap>{
 		Version++;
 		if (cells == null)
 			return;
-		MobsSpawner.Instance.UnloadMap (this.Map);
 		foreach (Cell cell in cells.Values) {
 			//Destroy (cell.Content.gameObject);
 			Destroy (cell.gameObject);
@@ -53,8 +52,6 @@ public class MeshMap : Singleton<MeshMap>{
 		cells = new Dictionary<Int32,Cell> ();
 		// current stair
 		FloorManager.FloorStair stair = FloorManager.Instance.Stair;
-
-		Debug.Log (map);
 
 		int i = 0;
 		for (int y = 0; y < Map.Height; y++) {
@@ -100,7 +97,6 @@ public class MeshMap : Singleton<MeshMap>{
 
 		PutCameraOverMap ();
 		this._ready = true;
-		MobsSpawner.Instance.LoadMap (map);
 	}
 
 	/**
@@ -202,7 +198,7 @@ public class MeshMap : Singleton<MeshMap>{
 		/*if(cell.Select)
 			makePath ();*/
 		
-		ActionManager.Instance.Player.Play(cell);
+		FloorManager.Instance.Player.Play(cell);
 		cell.Select = false;
 	}
 

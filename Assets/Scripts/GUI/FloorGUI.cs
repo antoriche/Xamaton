@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FloorGUI : MonoBehaviour {
+public class FloorGUI : Singleton<FloorGUI> {
 
 	Player player;
 

@@ -13,8 +13,23 @@ public class Monster : Entity {
 		Deplacable dep = gameObject.GetComponent<Deplacable> ();
 		if (!dep)
 			return false;
-
 		List<Cell> cells = new List<Cell> ();
+
+		// IA heal : if life < 50% of Max life
+		if (this.Life < this.MaxLife && this.MaxLife / this.Life > 2) {
+			foreach (char key in this.Inventory.Keys) {
+
+				ItemLine il = this.Inventory [key];
+				// if it's a heal action
+				if (il.item.ActionBound.GetType ().Equals (typeof(HealthAction))) {
+					ChangeCurrentAction (key);
+					cells.Add (dep.Cell);
+					return ExecuteAction (cells);
+				}
+			}
+		}
+			
+		// IA Attack
 		cells.Add (cell);
 		if (CanAttack (cells)) {
 			return ExecuteAction (cells);
@@ -35,16 +50,11 @@ public class Monster : Entity {
 		return CanExecuteAction (target);
 	}
 
-	/*
-	 * Removing the monster in a clean way from the game
-	 */
-	void OnDestroy() {
-		MobsSpawner.Instance.RemoveMonster (this);
-	}
-
 	public override void Die ()
-	{
+	{		
 		GameObject.FindWithTag ("Player").GetComponent<Player> ().Experience += this.experience;
-		DestroyObject (gameObject);
+		// drop items
+		FloorManager.Instance.Spawners.Add (this);
+		FloorManager.Instance.Spawners.Remove (this);
 	}
 }
