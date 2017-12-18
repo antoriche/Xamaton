@@ -150,8 +150,8 @@ public class ItemsSpawner : Spawner  {
 			}
 		} else {
 			// Update position
-
-			Cell initCell = MeshMap.Instance.getCellFromPosition (obj.transform.position);
+			Vector3 vector = new Vector3 (obj.transform.position.x-0.5f, obj.transform.position.y-0.5f, 0.0f);
+			Cell initCell = MeshMap.Instance.getCellFromPosition (vector);
 			// if the cell doesn't have space to accommodate the item, we look around its neighbors.
 			Cell cell = initCell;
 			if (!initCell.CanDropItem()) {

@@ -51,11 +51,10 @@ public class Monster : Entity {
 	}
 
 	public override void Die ()
-	{
+	{		
+		GameObject.FindWithTag ("Player").GetComponent<Player> ().Experience += this.experience;
 		// drop items
 		FloorManager.Instance.Spawners.Add (this);
 		FloorManager.Instance.Spawners.Remove (this);
-		GameObject.FindWithTag ("Player").GetComponent<Player> ().Experience += this.experience;
-		DestroyObject (gameObject);
 	}
 }

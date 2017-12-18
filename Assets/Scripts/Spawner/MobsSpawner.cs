@@ -8,6 +8,23 @@ using UnityEngine;
 [CreateAssetMenu(menuName="Spawner/Monsters Spawner")]
 public class MobsSpawner : Spawner {
 
+	// TODO optimisation
+	public List<ProbabilitySpawn> mobsPrefabs;
+
+	[SerializeField]
+	private int level = 1;
+	public int Level{
+		get{ return level; }
+		set{ 
+			if (value <= 0)
+				throw new System.InvalidOperationException ("Level must be higher than 0 !");
+			level = value;
+
+			spawnMin = spawnMin + (level / 3);
+			spawnMax = spawnMax + (level * spawnMax / 10);
+		}
+	}
+
 	/*
 	 * When loading a new floor
 	 */
@@ -22,6 +39,7 @@ public class MobsSpawner : Spawner {
 		}
 		this._spawnables.Clear();
 		// Spawn monsters on the new floor
+		this.Level = FloorManager.Instance.NumFloor;
 		while (this._nbrSpawnables <= spawnMin) {
 			Add ();
 		}
@@ -40,8 +58,10 @@ public class MobsSpawner : Spawner {
 			this._spawnables.Add(map, new List<Spawnable>());
 		}
 		List<Spawnable> listMonsters = this._spawnables [map];
-		GameObject obj = GameObject.Instantiate<GameObject> (this.prefabSpawnable.gameObject);
+		Monster mobsPrefab = GetRandomMonster();
+		GameObject obj = GameObject.Instantiate<GameObject> (mobsPrefab.gameObject);
 		Monster monster = obj.GetComponent<Monster> ();
+		monster.Level = this.Level;
 		monster.gameObject.SetActive (false);
 		monster.gameObject.transform.position = Vector3.zero;
 		listMonsters.Add (monster);
@@ -130,4 +150,28 @@ public class MobsSpawner : Spawner {
 			Add ();
 		}
 	}
+
+	Monster GetRandomMonster(){
+		float sum = 0;
+		foreach (ProbabilitySpawn prob in mobsPrefabs) {
+			sum += prob.weight;
+		}
+		float roll = Random.Range (1, sum + 1);
+		float cursor = 0;
+		if (mobsPrefabs.Count > 0) {
+			foreach (ProbabilitySpawn item in mobsPrefabs) {
+				cursor += item.weight;
+				if (cursor >= roll) {
+					return item.element;
+				}
+			}
+		}
+		return (Monster)this.prefabSpawnable;
+	}
+}
+
+[System.Serializable]
+public class ProbabilitySpawn{
+	public Monster element;
+	public float weight;
 }

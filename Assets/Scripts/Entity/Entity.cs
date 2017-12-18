@@ -15,6 +15,9 @@ public abstract class Entity : Spawnable {
 	}
 
 	[SerializeField]
+	protected Inventory listItems;
+
+	[SerializeField]
 	protected Stats initialStats;
 
 	[SerializeField]
@@ -169,8 +172,8 @@ public abstract class Entity : Spawnable {
 	 */ 
 	public void TakeHeal(int heal) {
 		this.life += heal;
-		if (this.life > this.maxLife) {
-			this.life = this.maxLife;
+		if (this.life > this.stats.maxLife) {
+			this.life = this.stats.maxLife;
 		}
 	}
 
