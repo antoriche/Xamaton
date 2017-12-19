@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class Player : Entity {
 
 	private int experience = 0;
-	private int required_experience = 1;
+	private int required_experience = 5;
 	public int Experience {
 		get{ return experience; }
 		set{ 
@@ -15,7 +15,7 @@ public class Player : Entity {
 			if (experience >= required_experience) {
 				Level++;
 				int r = required_experience;
-				required_experience *=2;
+				required_experience +=1;
 				Experience -= r;
 			}
 		}
