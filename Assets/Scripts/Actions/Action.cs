@@ -1,28 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
+using System;
 
 public abstract class Action : ScriptableObject {
 
-	[SerializeField]
-	private Sprite image;
-	public Sprite Image {
-		get {
-			return image;
-		}
-	}
+	// action keyboard :
+	public static readonly char[] ACTION_KEY = new char[] {'M', 'A', 'Z', 'E'};
+	public enum Category { Movement=0, Attack1=1, Attack2=2, Heal=3 }
 
 	[SerializeField]
-	private int loadingTime;
-	public virtual int LoadingTime {
-		get {
-			return loadingTime;
-		}
+	Category _defaultCategory = Category.Movement;
+	public Category DefaultCategory {
+		get { return _defaultCategory; }
 	}
 
 	public virtual void Enable (GameObject obj) {}
 
-	public abstract void Execute(GameObject obj, List<Cell> cells);
+	public virtual void Execute(GameObject obj, List<Cell> cells) {
+		// consume item when execute an action
+		Entity ent = obj.GetComponent<Entity> ();
+		ent.ConsumeItemInInventory (ACTION_KEY[(int)this._defaultCategory]);
+	}
 
 	public virtual void Disable () {}
 

@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public abstract class Entity : MonoBehaviour {
+public abstract class Entity : Spawnable {
 
 	private static int ENTITY_ID = 0;
 	private int Id;
 
 	// List actions allowed for the entity
-	private Dictionary<Char, Action> actions = new Dictionary<Char, Action> ();
-	[SerializeField]
-	ActionMapper listActions;
-	public ActionMapper ListActions {
-		get { return listActions; }
+	private Dictionary<Char, ItemLine> _inventory = new Dictionary<Char, ItemLine> ();
+	public Dictionary<Char, ItemLine> Inventory {
+		get { return this._inventory; }
 	}
+
+	[SerializeField]
+	protected Inventory listItems;
 
 	[SerializeField]
 	protected Stats initialStats;
@@ -72,8 +73,12 @@ public abstract class Entity : MonoBehaviour {
 		ENTITY_ID++;
 		this.Id = ENTITY_ID;
 		// load actions
-		foreach (ActionLine line in ListActions.map) {
-			actions.Add (line.character, line.action);
+		foreach (ItemLine line in listItems.map) {
+			// copying the itemline to avoid modifying the entity's original inventory
+			ItemLine itemLine = new ItemLine ();
+			itemLine.item = line.item;
+			itemLine.quantity = line.quantity;
+			_inventory.Add (Action.ACTION_KEY[(int)line.item.ActionBound.DefaultCategory], itemLine);
 		}
 		stats = initialStats;
 		life = stats.maxLife;
@@ -89,6 +94,11 @@ public abstract class Entity : MonoBehaviour {
 		ActionManager.Instance.RemoveEntity (this);
 	}
 
+	/* =========================================
+	 *  START ACTION
+	 * 
+	 */
+
 	public abstract bool Play (Cell cell);
 
 	/**
@@ -96,14 +106,16 @@ public abstract class Entity : MonoBehaviour {
 	 * @return bool
 	 */
 	public bool ChangeCurrentAction(char action) {
-		if (!actions.ContainsKey (action))	
+		if (!_inventory.ContainsKey (action))	
 			return false;
 		
 		if(currentAction)
 			currentAction.Disable ();
 		
-		Action changeAction = null;
-		actions.TryGetValue(action, out changeAction);
+		ItemLine itemLine = null;
+		_inventory.TryGetValue(action, out itemLine);
+		// retrieve action bound to item
+		Action changeAction = itemLine.item.ActionBound;
 		// if equals => cancellation
 		if (currentAction != null && currentAction.Equals(changeAction)) {
 			currentAction = null;
@@ -138,6 +150,11 @@ public abstract class Entity : MonoBehaviour {
 		return currentAction.CanExecute (gameObject, cells);
 	}
 
+	/* 
+	 *  END ACTION
+	 * =========================================
+	 */
+
 	/**
 	 * Modify the life
 	 * @param int damage
@@ -149,7 +166,73 @@ public abstract class Entity : MonoBehaviour {
 		}
 	}
 
+	/**
+	 * Modify the life
+	 * @param int heal
+	 */ 
+	public void TakeHeal(int heal) {
+		this.life += heal;
+		if (this.life > this.stats.maxLife) {
+			this.life = this.stats.maxLife;
+		}
+	}
+
 	public abstract void Die();
+
+	/*
+	 * Add an item in the entity inventory
+	 * @return bool
+	 */
+	public bool AddItemInInventory(Item item) {
+
+		Action action = item.ActionBound;
+		// choose an key to store
+		char key = Action.ACTION_KEY [(int)action.DefaultCategory];
+		if (this._inventory.ContainsKey (key)) {
+			// Increment quantity in the inventory
+			ItemLine itemLine = this._inventory [key];
+			if (itemLine.item.Equals (item) && itemLine.item.IsConsumable) {
+				itemLine.quantity++;
+				this._inventory [key] = itemLine;
+				return true;
+			}
+		} else {
+			ItemLine newItemLine = new ItemLine ();
+			newItemLine.item = item;
+			newItemLine.quantity = 1;
+			this._inventory.Add (key, newItemLine);
+			return true;
+		}
+		// inventory slot full
+		Debug.Log("Inventory slot : " + key + " full");
+		return false;
+	}
+
+	/*
+	 * Consume an item in the entity inventory
+	 * @return bool
+	 */
+	public bool ConsumeItemInInventory(char key) {
+
+		if (!this._inventory.ContainsKey (key)) {
+			Debug.LogError("L'item n'est pas présent dans l'inventaire");
+			return false;
+		}
+
+		ItemLine itemLine = this._inventory [key];
+		// decrement quantity in the inventory
+		if (itemLine.item.IsConsumable) {
+			itemLine.quantity--;
+			Debug.Log(this.name + " utilise 1 " + itemLine.item.name);
+			if (itemLine.quantity <= 0) {
+				this._inventory.Remove (key);
+				return true;
+			}
+			this._inventory [key] = itemLine;
+			return true;
+		}
+		return false;
+	}
 
 	/**
 	* Check if this entity is equals parameter

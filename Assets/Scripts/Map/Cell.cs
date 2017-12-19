@@ -12,8 +12,9 @@ public class Cell : MonoBehaviour{
 	public int Id{ get{ return id_; } }
 	public MeshMap Matrice { get { return gameObject.GetComponentInParent<MeshMap>(); } }
 
+	// Obstacle
 	[SerializeField]
-	private Placable content;
+	Placable content;
 	public Placable Content{
 		get{
 			return content;
@@ -25,6 +26,19 @@ public class Cell : MonoBehaviour{
 				content.Cell = this;
 			}
 			RefreshRender ();
+		}
+	}
+
+	// Item
+	[SerializeField]
+	ItemObject item;
+	public ItemObject ItemObject {
+		get { return item; }
+		set {
+			// if this cell is not a obstacle
+			if (this.CanDropItem()) {
+				this.item = value;
+			}
 		}
 	}
 
@@ -101,10 +115,18 @@ public class Cell : MonoBehaviour{
 		}
 	}
 
+	/*
+	 * Check if this cell contains an object : Placable (Obstacle) or Item
+	 */
+	public bool CanDropItem() {
+		if (this.item == null && (this.content != null && this.content.GetType() == typeof(Entity) || this.content == null))
+			return true;
+		return false;
+	}
 
 	private Color defaultColor;
 	//private Texture defaultTexture;
-	private void RefreshRender(){
+	private void RefreshRender() {
 		Renderer renderer = gameObject.GetComponentInChildren<Renderer> ();
 		if (renderer){
 			Color32 color = (select_ ? Color.blue : mouseOver_ ? Color.green : defaultColor);

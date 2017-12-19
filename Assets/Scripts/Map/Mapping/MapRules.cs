@@ -12,24 +12,12 @@ using UnityEditor;
 public class MapRules : ScriptableObject {
 
 	[SerializeField]
-	TextAsset mapModel = null;
-	private char[][] _mapModel = new char[15][];
-	public char[][] MapModel {
-		get {
-			if (this._mapModel.Length == 0)
-				return this._mapModel;
-			// Convert string [] to char [][]
-			string[] model = mapModel.text.Split (new char[]{ '\n' });
-			int i = 0;
-			foreach (string line in model) {
-				this._mapModel [i] = line.ToCharArray ();
-				i++;
-			}
-			return this._mapModel;
-		}
-	}
+	List<TextAsset> mapModels;
+
 	[SerializeField]
-	List<RulesLine> rulesModel;
+	List<RulesLine> rulesNightModel;
+	[SerializeField]
+	List<RulesLine> rulesDayModel;
 	[SerializeField]
 	Cell defaultCell;
 	public Cell DefaultCell{ get { return defaultCell; } }
@@ -50,8 +38,17 @@ public class MapRules : ScriptableObject {
 
 	/*
 	 * Modify map generation rules, allows changing the map environment (Forest, mountain, river, ...)
+	 * Change day and night
 	 */
 	public void ChangeRules() {
+		int randomDay = Random.Range (0, 2);
+		List<RulesLine> rulesModel;
+		if (randomDay == 1) {
+			rulesModel = rulesDayModel;
+		} else {
+			rulesModel = rulesNightModel;
+		}
+
 		this._currentRules = new List<RulesLine>();
 		foreach(RulesLine line in rulesModel){
 			Cell cellChoice = line.cells[Random.Range(0, line.cells.Count)];
@@ -61,6 +58,24 @@ public class MapRules : ScriptableObject {
 			rl.cells.Add(cellChoice);
 			this._currentRules.Add(rl);
 		}
+	}
+
+	/*
+	 * Get a random map converted to char[][]
+	 * Why char[][] ? Because string[] is immutable
+	 */
+	public char[][] GetMapModel() {
+		TextAsset mapModel = mapModels[Random.Range(0, mapModels.Count)];
+		char[][] result = new char[15][];
+
+		// Convert string [] to char [][]
+		string[] model = mapModel.text.Split (new char[]{ '\n' });
+		int i = 0;
+		foreach (string line in model) {
+			result [i] = line.ToCharArray ();
+			i++;
+		}
+		return result;
 	}
 }
 

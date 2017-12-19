@@ -12,7 +12,7 @@ public class MapFactory {
 	public Map GetMap(MapRules rules, int widthFloor, int heightFloor, int[] coordinatesMap) {
 
 		// Init map
-		char[][] txtMap = rules.MapModel;
+		char[][] txtMap = rules.GetMapModel();
 		// x = width, y = height
 		int widthMap = txtMap.Length;
 		int heightMap = txtMap [0].Length-1;
