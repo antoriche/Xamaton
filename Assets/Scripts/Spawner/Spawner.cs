@@ -48,6 +48,10 @@ public abstract class Spawner : ScriptableObject {
 		}
 	}
 
+	public void Clear(){
+		_spawnables.Clear ();
+	}
+
 	/*
 	 * When loading a new floor
 	 */

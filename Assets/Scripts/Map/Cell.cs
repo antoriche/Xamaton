@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
+//using UnityEditor;
 using System;
 
 public class Cell : MonoBehaviour{
@@ -153,7 +153,7 @@ public class Cell : MonoBehaviour{
 
 }
 
-[CustomEditor(typeof(Cell))]
+/*[CustomEditor(typeof(Cell))]
 [CanEditMultipleObjects]
 class CellEditor : Editor {
 
@@ -170,4 +170,4 @@ class CellEditor : Editor {
 		EditorGUILayout.LabelField ("Position : ","X : "+position.x.ToString()+"  Y : "+position.y.ToString());
 	}
 
-}
+}*/

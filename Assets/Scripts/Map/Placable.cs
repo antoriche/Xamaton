@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
+//using UnityEditor;
 using System;
 
 public class Placable : MonoBehaviour {
@@ -86,7 +86,7 @@ public class Placable : MonoBehaviour {
 }
 
 
-[CustomEditor(typeof(Placable))]
+/*[CustomEditor(typeof(Placable))]
 [CanEditMultipleObjects]
 class PlacableEditor : Editor {
 
@@ -116,4 +116,4 @@ class PlacableEditor : Editor {
 		//EditorGUILayout.LabelField ("Y : "+position.y.ToString());
 	}
 
-}
+}*/

@@ -24,7 +24,7 @@ public class AttackAction : Action
 		Placable pla = obj.GetComponent<Placable> ();
 		radiusAttack = MeshMap.Instance.CellRadius(pla.Cell, po);
 		foreach(Cell c in radiusAttack) {
-			if (c.Content == null)
+			if (c.Content == null || c.Content.GetComponent<Entity>() != null)
 				c.Select = true;
 		}
 	}

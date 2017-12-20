@@ -220,12 +220,12 @@ public class MeshMap : Singleton<MeshMap>{
 				if (cell && cell.Content) {
 					Entity entity = cell.Content.GetComponent<Entity> ();
 					if (entity as Player == null) {
-						GameObject.FindWithTag ("Target LifeBar").GetComponent<LifeBar> ().entity = entity;
+						GameObject.Find("Target LifeBar").GetComponent<LifeBar> ().entity = entity;
 					} else {
-						GameObject.FindWithTag ("Target LifeBar").GetComponent<LifeBar> ().entity = null;
+						GameObject.Find("Target LifeBar").GetComponent<LifeBar> ().entity = null;
 					}
 				} else {
-					GameObject.FindWithTag ("Target LifeBar").GetComponent<LifeBar> ().entity = null;
+					GameObject.Find("Target LifeBar").GetComponent<LifeBar> ().entity = null;
 				}
 				if (cell != mouseOver && mouseOver) {
 					mouseOver.MouseOver = false;

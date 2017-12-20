@@ -26,7 +26,7 @@ public class Player : Entity {
 	private IEnumerator runningMove;
 
 	void Start(){
-		GameObject.FindWithTag ("Player LifeBar").GetComponent<LifeBar> ().entity = this;
+		GameObject.Find("Player LifeBar").GetComponent<LifeBar> ().entity = this;
 	}
 
 	// Update is called once per frame
@@ -43,8 +43,7 @@ public class Player : Entity {
 			ChangeCurrentAction (character);
 		}
 	}
-
-	#region implemented abstract members of Entity
+		
 	public override bool Play(Cell cell) {
 		// if cell contains a monster => attack
 		if (cell.Content && cell.Content.GetComponents<Monster> () != null) {
@@ -86,7 +85,6 @@ public class Player : Entity {
 		StartCoroutine(runningMove);
 		return true;
 	}
-	#endregion
 
 	/**
 	 * Execute the player turns
@@ -123,6 +121,7 @@ public class Player : Entity {
 
 	public override void Die ()
 	{
+		FloorManager.Instance.Spawners.Clear ();
 		SceneManager.LoadScene ("GameOver");
 	}
 

@@ -23,6 +23,11 @@ public class ListSpawners : ScriptableObject {
 		listSpawners.ForEach(spawner => { spawner.LoadFloor(); });
 	}
 
+	public void Clear ()
+	{
+		listSpawners.ForEach(spawner => { spawner.Clear(); });
+	}
+
 	// TODO optimisation
 	public void Add (Entity entity)
 	{
