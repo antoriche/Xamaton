@@ -31,7 +31,7 @@ public class Deplacable : Placable {
 /*
 	Should extends PlacableEditor but It doesn't work
 */
-[CustomEditor(typeof(Deplacable))]
+/*[CustomEditor(typeof(Deplacable))]
 [CanEditMultipleObjects]
 class DeplacableEditor : Editor {
 
@@ -62,4 +62,4 @@ class DeplacableEditor : Editor {
 		//EditorGUILayout.LabelField ("Y : "+position.y.ToString());
 	}
 
-}
+}*/
